@@ -1,0 +1,8 @@
+/dist/
+/preview/
+/preview-materials/
+/assets/documents/
+/assets/images/
+/screenshots/
+__pycache__/
+.DS_Store
