@@ -1,7 +1,8 @@
 /dist/
 /preview/
 /preview-materials/
-/assets/documents/
+/assets/documents/*
+!/assets/documents/cv.pdf
 /assets/images/
 /screenshots/
 __pycache__/

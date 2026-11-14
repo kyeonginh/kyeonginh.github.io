@@ -64,8 +64,6 @@ def navigation(content, notes, prefix, active):
     ]
     if notes:
         links.append(('archive.html', 'Notes', 'notes'))
-    if content.get('cv'):
-        links.append((f"assets/documents/{content['cv']}", 'CV', 'cv'))
     return '\n'.join(
         render('navigation-link', href=escape(prefix + href), label=escape(label),
                current=' aria-current="page"' if key == active else '')
@@ -91,14 +89,14 @@ def home(content, notes):
     expositions = render('expositions', notes=note_rows(notes[:3])) if notes else ''
     portrait = content.get('portrait')
     portrait_html = render('portrait', file=escape(portrait['file']), alt=escape(portrait['alt'])) if portrait else ''
-    cv_button = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
+    cv_reference = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
     values = {key: escape(content[key]) for key in
               ['location', 'email', 'github', 'linkedin', 'about', 'research_interests']}
     values['about'] = inline_links(content['about'])
     return render(
         'home', **values, expositions=expositions,
         portrait=portrait_html, portrait_class='has-portrait' if portrait else '',
-        cv_button=cv_button,
+        cv_reference=cv_reference,
         name_lines='<br>\n'.join(escape(line) for line in content['name_lines']),
     )
 

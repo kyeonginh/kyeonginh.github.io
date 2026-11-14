@@ -51,6 +51,7 @@ python3 scripts/serve.py
 | `about` | 현재 직무와 학력을 소개하는 첫 문단 |
 | `research_interests` | 관심 분야를 소개하는 두 번째 문단 |
 | `portrait` | 프로필 사진의 파일명과 대체 설명. `null`로 두면 숨김 |
+| `cv` | 공개 CV 파일명. `null`로 두면 안내 문장과 PDF를 숨김 |
 
 예를 들어 이름을 한 줄로 표시하려면 다음과 같이 바꿉니다.
 
@@ -142,11 +143,17 @@ CSS는 빌드할 때 내용에 따른 버전 파일명으로 출력됩니다. �
 
 ## 7. CV와 발표 자료
 
-현재 설정은 다음과 같으며, 파일과 링크가 공개되지 않습니다.
+CV는 소개 문단 아래의 **Here is my CV.** 문장에서 연결합니다. `CV`를 누르면 PDF가 열립니다.
 
 ```json
 "notes": [],
-"cv": null
+"cv": "cv.pdf"
 ```
 
-이 두 항목은 공개를 결정하기 전까지 그대로 두면 됩니다. `assets/documents/`·`assets/images/`는 Git 업로드에서도 제외되어 있습니다. 나중에 자료를 공개할 때만 파일 추가와 ignore 규칙을 의도적으로 변경합니다.
+- 공개 파일: `assets/documents/cv.pdf`
+- 공개 주소: <https://kyeonginh.com/assets/documents/cv.pdf>
+- 원본 관리: `phd-paperwork/out/commons/cv.pdf`를 이 위치에 복사했습니다. 현재 공개본은 2026-11-13에 컴파일된 파일입니다.
+- 갱신 방법: 원본 프로젝트에서 새 CV를 컴파일한 뒤 공개 파일을 교체하고 commit·push합니다. 링크 주소는 유지됩니다.
+- 일시적으로 숨기려면 `cv`를 `null`로 바꿉니다. Git 기록에 올라간 기존 PDF까지 삭제되는 것은 아닙니다.
+
+발표 자료는 아직 공개하지 않습니다. `notes`는 빈 배열로 유지하고, `.gitignore`도 `assets/documents/cv.pdf` 한 파일만 허용합니다. 다른 문서와 발표 이미지 폴더는 계속 업로드에서 제외합니다.
