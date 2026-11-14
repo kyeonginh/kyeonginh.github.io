@@ -6,7 +6,7 @@
   "location": "Seoul, South Korea",
   "email": "kyeonginh@gmail.com",
   "github": "https://github.com/kyeonginh",
-  "about": "I am a research engineer at [ENERZAi](https://enerzai.com), working on machine-learning inference optimization. I received my B.S. in [Industrial Engineering](https://ie.snu.ac.kr/en/) from [Seoul National University](https://en.snu.ac.kr/index.html).",
+  "about": "I am a research engineer at [ENERZAi](https://enerzai.com), working on machine-learning inference optimization.",
   "research_interests": "My interests are in combinatorial optimization, particularly the use of combinatorial structure and polyhedral methods in algorithm design.",
   "notes": [
     {
@@ -75,5 +75,19 @@
     "file": "profile.jpeg",
     "alt": "Kyeongin Hong holding a blue plush toy"
   },
-  "linkedin": "https://www.linkedin.com/in/kyeong-in-hong/"
+  "linkedin": "https://www.linkedin.com/in/kyeong-in-hong/",
+  "experience": [
+    {
+      "title": "Research Engineer, ML Optimization",
+      "organization": "[ENERZAi R&D Center](https://enerzai.com)",
+      "dates": "Feb 2025 – Present"
+    }
+  ],
+  "education": [
+    {
+      "title": "[B.S. in Industrial Engineering](https://ie.snu.ac.kr/en/)",
+      "organization": "[Seoul National University](https://en.snu.ac.kr/index.html)",
+      "dates": "Mar 2021 – Feb 2025"
+    }
+  ]
 }

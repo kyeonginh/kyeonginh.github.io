@@ -238,3 +238,20 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
   .seminar-note { grid-template-columns: 1fr; gap: 22px; }
   .seminar-preview { max-width: 480px; }
 }
+
+/* About의 기본 이력: 장식 없이 두 개의 짧은 목록으로 표시합니다. */
+.profile-background { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; border-top: 1px solid var(--line); padding: 38px 0 54px; }
+.profile-background h2 { font-size: 23px; margin-bottom: 22px; letter-spacing: -.5px; }
+.profile-entry + .profile-entry { margin-top: 22px; }
+.profile-entry h3 { font-size: 17px; line-height: 1.5; letter-spacing: -.15px; margin-bottom: 4px; }
+.profile-entry h3 a { text-decoration: none; }
+.profile-organization { color: var(--muted); font-size: 14px; margin-bottom: 5px; }
+.profile-organization a { text-decoration: none; }
+.profile-dates { color: var(--muted); font-size: 12px; margin-bottom: 0; }
+.slides-page .section { border-top: 0; padding-top: 0; }
+.header nav a[aria-current="page"] { color: var(--ink); }
+.header nav a[aria-current="page"]::after { transform: scaleX(1); }
+@media (max-width: 640px) {
+  .profile-background { grid-template-columns: 1fr; gap: 32px; padding: 30px 0 38px; }
+  .profile-background h2 { margin-bottom: 16px; }
+}

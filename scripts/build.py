@@ -60,10 +60,10 @@ def note_rows(notes, prefix=''):
 
 def navigation(content, notes, prefix, active):
     links = [
-        ('index.html#about', 'About', 'home'),
+        ('index.html', 'About', 'home'),
     ]
     if notes:
-        links.append(('index.html#seminar-slides', 'Slides', 'notes'))
+        links.append(('slides.html', 'Slides', 'notes'))
     return '\n'.join(
         render('navigation-link', href=escape(prefix + href), label=escape(label),
                current=' aria-current="page"' if key == active else '')
@@ -86,7 +86,12 @@ def page(content, notes, title, body, preview=False, prefix='', active=''):
 
 def home(content, notes):
     """홈페이지의 각 부분을 조립합니다. 문장은 content.json에서 읽습니다."""
-    expositions = render('expositions', notes=note_rows(notes)) if notes else ''
+    def background_rows(key):
+        return '\n'.join(render('profile-entry', title=inline_links(entry['title']),
+                                organization=inline_links(entry['organization']),
+                                dates=escape(entry['dates'])) for entry in content.get(key, []))
+    profile_background = render('profile-background', experience=background_rows('experience'),
+                                education=background_rows('education'))
     portrait = content.get('portrait')
     portrait_html = render('portrait', file=escape(portrait['file']), alt=escape(portrait['alt'])) if portrait else ''
     cv_reference = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
@@ -94,7 +99,7 @@ def home(content, notes):
               ['location', 'email', 'github', 'linkedin', 'about', 'research_interests']}
     values['about'] = inline_links(content['about'])
     return render(
-        'home', **values, expositions=expositions,
+        'home', **values, profile_background=profile_background,
         portrait=portrait_html, portrait_class='has-portrait' if portrait else '',
         cv_reference=cv_reference,
         name_lines='<br>\n'.join(escape(line) for line in content['name_lines']),
@@ -145,6 +150,9 @@ def build(preview=False):
         destination.write_text(page(content, notes, title, body, preview, prefix, active), encoding='utf-8')
 
     write('index.html', 'About', home(content, notes), active='home')
+    if notes:
+        body = render('slides', expositions=render('expositions', notes=note_rows(notes)))
+        write('slides.html', 'Seminar Slides', body, active='notes')
     write('404.html', 'Page not found', render('not-found'), prefix='/')
 
     # 별도 아카이브가 필요해졌을 때만 활성화합니다.

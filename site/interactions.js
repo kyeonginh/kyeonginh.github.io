@@ -1,4 +1,9 @@
 (() => {
+  // 기존 홈페이지의 Slides 앵커 주소도 새 페이지로 연결합니다.
+  if (window.location.hash === '#seminar-slides' && document.getElementById('about')) {
+    window.location.replace('slides.html#seminar-slides');
+    return;
+  }
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let observer;
   const targets = [...document.querySelectorAll('.section, .footer')];

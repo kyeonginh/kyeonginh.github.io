@@ -86,7 +86,7 @@ JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 �
 
 기존 두 문단의 순서를 바꾸려면 위의 `<p>` 줄 순서만 바꾸면 됩니다. 짧은 새 문단은 `<p>새 문장</p>`으로 직접 넣어도 됩니다. `${...}`의 이름을 새로 만들려면 `build.py`에도 연결해야 하므로, 처음에는 기존 항목을 편집하는 편이 간단합니다.
 
-`base.html`은 페이지 공통 틀, `home.html`은 첫 화면 본문입니다. `expositions.html`은 첫 화면의 Seminar Slides 섹션이고, `note-row.html`은 제목·날짜·설명·PDF 링크 한 항목입니다. 별도 아카이브와 상세 페이지는 현재 생성하지 않습니다.
+`base.html`은 페이지 공통 틀, `home.html`은 첫 화면 본문입니다. `expositions.html`은 Slides 페이지의 Seminar Slides 섹션이고, `note-row.html`은 제목·날짜·설명·PDF 링크 한 항목입니다. `slides.html`은 발표 전용 페이지이며 별도 아카이브와 자료별 상세 페이지는 현재 생성하지 않습니다.
 
 ## 5. 디자인 수정 — `style.css`
 
@@ -179,3 +179,11 @@ Combinatorial Geometries 자료는 `assets/documents/slides/combinatorial-geomet
 - (0,1)-Matrices and Latin Squares: June 4, 2025. 원본 발표 표지 날짜 유지. 대표 미리보기 20페이지.
 
 PDF와 미리보기는 각각 `assets/documents/slides/`, `assets/images/`에 두며 `.gitignore`에는 승인한 파일만 허용합니다.
+
+## About / Slides 페이지
+
+- `index.html`: 사진, 연락처, 짧은 소개·관심사, CV, Experience와 Education.
+- `slides.html`: 날짜 역순 발표 목록.
+- 상단 메뉴의 밑줄로 현재 페이지를 표시합니다. 기존 `/#seminar-slides` 주소는 새 Slides 페이지로 연결합니다.
+- 기본 이력은 `site/content.json`의 `experience`, `education`에서 편집합니다. `title`, `organization`, `dates`를 사용하며 `[이름](https://주소)` 링크를 넣을 수 있습니다.
+- 레이아웃은 `profile-background.html`, 각 이력 항목은 `profile-entry.html`입니다.
