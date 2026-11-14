@@ -1,19 +1,22 @@
 <main id="main" class="home">
-  <!-- 첫 화면: 왼쪽 프로필, 오른쪽 소개 -->
-  <section id="about" class="intro" aria-labelledby="name">
-    <aside class="identity">
-      <h1 id="name">${name_lines}</h1>
-      <p class="location">${location}</p>
-      ${cv_button}
-      <div class="contact-links">
-        <a href="mailto:${email}">Email <span aria-hidden="true">↗</span></a>
-        <a href="${github}">GitHub <span aria-hidden="true">↗</span></a>
-      </div>
-    </aside>
+  <!-- 첫 화면: 왼쪽 사진, 오른쪽 이름·소개 -->
+  <section id="about" class="intro ${portrait_class}" aria-labelledby="name">
+    ${portrait}
+    <div class="profile-details">
+      <aside class="identity">
+        <h1 id="name">${name_lines}</h1>
+        <p class="location">${location}</p>
+        ${cv_button}
+        <div class="contact-links">
+          <a href="mailto:${email}">Email <span aria-hidden="true">↗</span></a>
+          <a href="${github}">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </aside>
 
-    <div class="intro-copy">
-      <p>${about}</p>
-      <p>${research_interests}</p>
+      <div class="intro-copy">
+        <p>${about}</p>
+        <p>${research_interests}</p>
+      </div>
     </div>
   </section>
 

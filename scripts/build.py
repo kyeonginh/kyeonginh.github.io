@@ -9,6 +9,7 @@
 import argparse
 import html
 import json
+import re
 import shutil
 from pathlib import Path
 from string import Template
@@ -20,6 +21,19 @@ SITE = ROOT / 'site'
 def escape(value):
     """JSON의 글자를 HTML에서 안전하게 표시합니다. 예: & → &amp;"""
     return html.escape(str(value), quote=True)
+
+
+
+def inline_links(text):
+    """소개 문장의 [이름](https://주소)만 링크로 변환합니다. 나머지는 일반 텍스트입니다."""
+    parts = []
+    cursor = 0
+    for match in re.finditer(r'\[([^\]]+)\]\((https?://[^\s)]+)\)', text):
+        parts.append(escape(text[cursor:match.start()]))
+        parts.append(f'<a href="{escape(match.group(2))}">{escape(match.group(1))}</a>')
+        cursor = match.end()
+    parts.append(escape(text[cursor:]))
+    return ''.join(parts)
 
 
 def render(template_name, **values):
@@ -67,11 +81,15 @@ def page(content, notes, title, body, preview=False, prefix='', active=''):
 def home(content, notes):
     """홈페이지의 각 부분을 조립합니다. 문장은 content.json에서 읽습니다."""
     expositions = render('expositions', notes=note_rows(notes[:3])) if notes else ''
+    portrait = content.get('portrait')
+    portrait_html = render('portrait', file=escape(portrait['file']), alt=escape(portrait['alt'])) if portrait else ''
     cv_button = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
     values = {key: escape(content[key]) for key in
               ['location', 'email', 'github', 'about', 'research_interests']}
+    values['about'] = inline_links(content['about'])
     return render(
         'home', **values, expositions=expositions,
+        portrait=portrait_html, portrait_class='has-portrait' if portrait else '',
         cv_button=cv_button,
         name_lines='<br>\n'.join(escape(line) for line in content['name_lines']),
     )
@@ -83,6 +101,10 @@ def copy_assets(output, content, notes):
     assets.mkdir()
     for name in ['style.css', 'favicon.svg', 'interactions.js']:
         shutil.copyfile(SITE / name, assets / name)
+    if content.get('portrait'):
+        (assets / 'profile').mkdir()
+        filename = content['portrait']['file']
+        shutil.copyfile(ROOT / 'assets/profile' / filename, assets / 'profile' / filename)
     if content.get('cv'):
         (assets / 'documents').mkdir(exist_ok=True)
         shutil.copyfile(ROOT / 'assets/documents' / content['cv'], assets / 'documents' / content['cv'])

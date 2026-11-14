@@ -10,7 +10,7 @@ HTML은 구조, CSS는 디자인, JavaScript는 움직임을 담당합니다. Py
 
 | 바꾸려는 것 | 파일 |
 |---|---|
-| 이름, 소개 문장, 이메일, 연구 관심사 | [`site/content.json`](site/content.json) |
+| 이름, 소개 문장, 이메일, 연구 관심사, 사진 설정 | [`site/content.json`](site/content.json) |
 | 첫 화면의 문단 순서, 새 문단, 제목 배치 | [`site/templates/home.html`](site/templates/home.html) |
 | 모든 페이지의 상단 메뉴·하단 정보 | [`site/templates/base.html`](site/templates/base.html) |
 | 배경색, 글자 크기, 간격, 배경 움직임 | [`site/style.css`](site/style.css) |
@@ -50,6 +50,7 @@ python3 scripts/serve.py
 | `location`, `email`, `github` | 위치와 연락처 |
 | `about` | 현재 직무와 학력을 소개하는 첫 문단 |
 | `research_interests` | 관심 분야를 소개하는 두 번째 문단 |
+| `portrait` | 프로필 사진의 파일명과 대체 설명. `null`로 두면 숨김 |
 
 예를 들어 이름을 한 줄로 표시하려면 다음과 같이 바꿉니다.
 
@@ -63,7 +64,7 @@ python3 scripts/serve.py
 "research_interests": "My interests are in combinatorial optimization, particularly the use of combinatorial structure and polyhedral methods in algorithm design."
 ```
 
-JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 쉼표를 넣지 않습니다.** 문장 안에 큰따옴표가 필요하면 `\"`로 씁니다. JSON에는 주석을 쓸 수 없습니다. 문구는 일반 텍스트로 처리하므로 HTML 태그를 넣어도 디자인으로 적용되지 않습니다.
+JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 쉼표를 넣지 않습니다.** 문장 안에 큰따옴표가 필요하면 `\"`로 씁니다. JSON에는 주석을 쓸 수 없습니다. 문구는 일반 텍스트로 처리하므로 HTML 태그를 넣어도 디자인으로 적용되지 않습니다. 다만 `about` 문단에서는 `[ENERZAi](https://enerzai.com)`처럼 쓰면 해당 이름에 링크가 연결됩니다. 링크 주소는 `https://` 또는 `http://`로 시작해야 합니다.
 
 ## 4. 배치 수정 — `home.html`
 
@@ -113,6 +114,12 @@ JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 �
 예를 들어 배경 움직임을 느리게 하려면 `animation: navy-drift 24s ...`의 `24s`를 `40s`로 바꿉니다. 끄려면 `.intro::before`의 `animation`을 `none`으로 바꿉니다.
 
 모바일에서는 파일 아래쪽의 `@media` 규칙이 우선 적용될 수 있습니다. 데스크톱 글자 크기를 바꿨는데 휴대폰에서 그대로라면 해당 `@media`도 확인하세요. 기기의 ‘움직임 줄이기’ 설정을 존중하는 규칙은 유지하는 것을 권합니다.
+
+### 프로필 사진
+
+프로필 사진은 `assets/profile/profile.jpeg`에 있습니다. 같은 파일을 교체하면 사진을 바꿀 수 있습니다. `assets/profile/`은 공개 프로필 사진 전용이며, 미공개 발표 이미지용 `assets/images/`와 구분합니다.
+
+화면에서의 크롭은 `.profile-photo`의 `aspect-ratio`와 `.profile-photo img`의 `object-position`으로 조정합니다. 원본 파일의 픽셀은 수정하지 않습니다. 현재는 얼굴과 인형이 함께 보이도록 4:3 비율을 사용합니다.
 
 ## 6. 확인하고 공개하기
 

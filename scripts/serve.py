@@ -14,7 +14,7 @@ def source_stamp():
     files = [path for path in (ROOT / 'site').rglob('*') if path.is_file()]
     files.append(ROOT / 'scripts/build.py')
     # 첨부파일을 나중에 추가하거나 교체했을 때도 새로 빌드합니다.
-    for folder in ['assets/documents', 'assets/images']:
+    for folder in ['assets/documents', 'assets/images', 'assets/profile']:
         if (ROOT / folder).exists():
             files.extend(path for path in (ROOT / folder).rglob('*') if path.is_file())
     return tuple(sorted((str(path), path.stat().st_mtime_ns) for path in files))
