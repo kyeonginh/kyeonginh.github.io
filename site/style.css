@@ -34,7 +34,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .wordmark { font-size: 19px; font-weight: 550; letter-spacing: -.5px; text-decoration: none; }
 .header nav { display: flex; align-items: center; gap: 29px; font-size: 13px; }
 .header nav a { color: var(--muted); text-decoration: none; position: relative; padding: 5px 0; }
-.header nav a::after, .contact-links a::after, .note-links a::after, .text-link::after, .contact-email::after {
+.header nav a::after, .contact-links a::after, .note-links a::after, .text-link::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0;
   height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left;
   transition: transform 240ms cubic-bezier(.22,1,.36,1);
@@ -43,8 +43,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .header nav a:hover::after, .header nav a:focus-visible::after,
 .contact-links a:hover::after, .contact-links a:focus-visible::after,
 .note-links a:hover::after, .note-links a:focus-visible::after,
-.text-link:hover::after, .text-link:focus-visible::after,
-.contact-email:hover::after, .contact-email:focus-visible::after { transform: scaleX(1); }
+.text-link:hover::after, .text-link:focus-visible::after { transform: scaleX(1); }
 .intro {
   position: relative; isolation: isolate;
   display: grid; grid-template-columns: 310px minmax(0,1fr); gap: 64px;
@@ -83,23 +82,17 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .identity h1 { font-size: 76px; line-height: 1.04; font-weight: 500; letter-spacing: -3.6px; margin: 0 0 21px; }
 .location { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
 .contact-links { display: flex; align-items: center; gap: 24px; font-size: 13px; color: #d1def0; margin-top: 20px; }
-.contact-links a, .note-links a, .text-link, .contact-email { position: relative; display: inline-block; text-decoration: none; padding-bottom: 4px; }
-.contact-links a > span, .note-links a > span:not(.file-tag), .text-link > span, .contact-email > span {
+.contact-links a, .note-links a, .text-link { position: relative; display: inline-block; text-decoration: none; padding-bottom: 4px; }
+.contact-links a > span, .note-links a > span:not(.file-tag), .text-link > span {
   display: inline-block; margin-left: 5px;
   transition: transform 220ms cubic-bezier(.22,1,.36,1);
 }
-.contact-links a:hover > span, .contact-links a:focus-visible > span,
-.contact-email:hover > span, .contact-email:focus-visible > span { transform: translate(2px,-2px); }
+.contact-links a:hover > span, .contact-links a:focus-visible > span { transform: translate(2px,-2px); }
 .note-links a:hover > span:not(.file-tag), .text-link:hover > span { transform: translateX(3px); }
 .intro-copy { min-width: 0; padding-top: 6px; }
 .intro-copy > p { color: var(--muted); font-size: 15px; line-height: 1.95; }
 .intro-copy > p:last-child { margin-bottom: 0; }
 .section { border-top: 1px solid var(--line); padding: 44px 0 50px; }
-.contact-section { display: grid; grid-template-columns: 310px minmax(0,1fr); gap: 64px; padding-bottom: 62px; }
-.contact-section .eyebrow { margin-bottom: 12px; }
-.contact-section p:not(.eyebrow) { color: var(--muted); font-size: 14px; margin-bottom: 10px; }
-.contact-email { font-size: 23px; letter-spacing: -.4px; overflow-wrap: anywhere; }
-.contact-email span { font-size: 17px; color: var(--accent); }
 .footer { display: flex; justify-content: space-between; gap: 20px; padding: 23px 0 33px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
 .footer a { text-decoration: none; }
 .inner { padding-top: 55px; padding-bottom: 80px; min-height: 70vh; }
@@ -142,7 +135,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .reveal-ready.is-visible { opacity: 1; transform: none; }
 @media (max-width: 950px) {
   .header, .home, .inner, .footer { width: calc(100% - 64px); }
-  .intro, .contact-section { grid-template-columns: 240px minmax(0,1fr); gap: 38px; }
+  .intro { grid-template-columns: 240px minmax(0,1fr); gap: 38px; }
   .identity h1 { font-size: 60px; letter-spacing: -2.8px; }
 }
 @media (max-width: 640px) {
@@ -160,9 +153,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
   .contact-links { margin-top: 14px; }
   .intro-copy { padding-top: 0; }
   .intro-copy > p { font-size: 14px; line-height: 1.9; }
-  .contact-section { grid-template-columns: 1fr; gap: 27px; }
   .section { padding: 33px 0 38px; }
-  .contact-email { font-size: 22px; }
   .footer { flex-direction: column; gap: 6px; }
   .page-title h1 { font-size: 34px; }
   .inner { padding-top: 35px; padding-bottom: 45px; }

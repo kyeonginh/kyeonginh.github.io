@@ -50,7 +50,6 @@ python3 scripts/serve.py
 | `location`, `email`, `github` | 위치와 연락처 |
 | `about` | 현재 직무와 학력을 소개하는 첫 문단 |
 | `research_interests` | 관심 분야를 소개하는 두 번째 문단 |
-| `contact_text` | 이메일 주소 위의 안내 문장 |
 
 예를 들어 이름을 한 줄로 표시하려면 다음과 같이 바꿉니다.
 

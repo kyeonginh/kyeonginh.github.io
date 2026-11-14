@@ -39,7 +39,6 @@ def note_rows(notes, prefix=''):
 def navigation(content, notes, prefix, active):
     links = [
         ('index.html#about', 'About', 'home'),
-        ('index.html#contact', 'Contact', 'contact'),
     ]
     if notes:
         links.append(('archive.html', 'Notes', 'notes'))
@@ -70,7 +69,7 @@ def home(content, notes):
     expositions = render('expositions', notes=note_rows(notes[:3])) if notes else ''
     cv_button = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
     values = {key: escape(content[key]) for key in
-              ['location', 'email', 'github', 'about', 'research_interests', 'contact_text']}
+              ['location', 'email', 'github', 'about', 'research_interests']}
     return render(
         'home', **values, expositions=expositions,
         cv_button=cv_button,
