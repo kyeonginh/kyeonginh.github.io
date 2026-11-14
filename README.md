@@ -47,7 +47,7 @@ python3 scripts/serve.py
 |---|---|
 | `name` | 상단 이름, 브라우저 탭, 하단 이름 |
 | `name_lines` | 첫 화면의 큰 이름. 배열의 각 항목이 한 줄 |
-| `location`, `email`, `github` | 위치와 연락처 |
+| `location`, `email`, `github`, `linkedin` | 위치와 연락처·프로필 링크 |
 | `about` | 현재 직무와 학력을 소개하는 첫 문단 |
 | `research_interests` | 관심 분야를 소개하는 두 번째 문단 |
 | `portrait` | 프로필 사진의 파일명과 대체 설명. `null`로 두면 숨김 |

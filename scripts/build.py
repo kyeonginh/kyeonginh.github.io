@@ -93,7 +93,7 @@ def home(content, notes):
     portrait_html = render('portrait', file=escape(portrait['file']), alt=escape(portrait['alt'])) if portrait else ''
     cv_button = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
     values = {key: escape(content[key]) for key in
-              ['location', 'email', 'github', 'about', 'research_interests']}
+              ['location', 'email', 'github', 'linkedin', 'about', 'research_interests']}
     values['about'] = inline_links(content['about'])
     return render(
         'home', **values, expositions=expositions,
