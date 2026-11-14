@@ -165,4 +165,4 @@ CV는 소개 문단 아래의 **Here is my CV.** 문장에서 연결합니다. `
 
 발표 자료는 `site/content.json`의 `notes`에서 편집합니다. 첫 공개본은 2026년 4월 13일 Matroid Representations 발표이며, 파일은 `assets/documents/slides/matroid-representations.pdf`입니다. 제목과 PDF 링크가 같은 파일을 엽니다.
 
-새 자료를 추가할 때에는 `notes` 항목과 함께 `.gitignore`에 해당 PDF 파일만 명시적으로 허용합니다. 현재 CV와 이 발표 PDF만 공개합니다. 원본 LaTeX, 검토 보고서, 다른 발표와 교재 PDF는 업로드하지 않습니다. 썸네일도 사용하지 않습니다.
+새 자료를 추가할 때에는 `notes` 항목과 함께 `.gitignore`에 해당 PDF 파일만 명시적으로 허용합니다. 현재 CV와 이 발표 PDF만 공개합니다. 원본 LaTeX, 검토 보고서, 다른 발표와 교재 PDF는 업로드하지 않습니다. 대표 슬라이드 이미지는 `assets/images/matroid-representations-preview.png`에 있습니다. `notes`의 `image`, `image_alt`, `preview_page`가 미리보기와 PDF 시작 페이지를 정합니다. 데스크톱에서는 이미지·설명을 나란히, 모바일에서는 위아래로 배치합니다.

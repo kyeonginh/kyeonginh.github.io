@@ -220,10 +220,21 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
   .reveal-ready { opacity: 1; transform: none; }
 }
 
-/* 단일 자료부터 시작하는 간단한 발표 목록 */
-.seminar-note { padding: 0 0 12px; max-width: 780px; }
-.seminar-note + .seminar-note { border-top: 1px solid var(--line); padding-top: 26px; margin-top: 20px; }
-.seminar-note h3 { font-size: 22px; margin-bottom: 10px; }
-.seminar-note h3 a { text-decoration: none; }
-.seminar-note > p { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
-.seminar-note > .seminar-meta { font-size: 13px; margin-bottom: 12px; }
+/* 대표 슬라이드와 설명을 나란히 놓는 세로 목록 */
+.seminar-note { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 34px; align-items: center; padding: 0 0 12px; }
+.seminar-note + .seminar-note { border-top: 1px solid var(--line); padding-top: 30px; margin-top: 26px; }
+.seminar-preview { display: block; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: white; transition: border-color 180ms; }
+.seminar-preview:hover { border-color: var(--accent); }
+.seminar-preview img { width: 100%; aspect-ratio: 16/9; object-fit: contain; }
+.seminar-copy { min-width: 0; }
+.seminar-copy h3 { font-size: 22px; margin-bottom: 10px; }
+.seminar-copy h3 a { text-decoration: none; }
+.seminar-copy > p { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+.seminar-copy > .seminar-meta { font-size: 13px; margin-bottom: 12px; }
+@media (max-width: 950px) {
+  .seminar-note { grid-template-columns: 280px minmax(0, 1fr); gap: 26px; }
+}
+@media (max-width: 700px) {
+  .seminar-note { grid-template-columns: 1fr; gap: 22px; }
+  .seminar-preview { max-width: 480px; }
+}

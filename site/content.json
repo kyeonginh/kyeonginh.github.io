@@ -15,7 +15,10 @@
       "source": "Oxley, Matroid Theory, §6.4",
       "summary": "Fundamental circuits, determinant conditions, and graph-based normalization of representations.",
       "pdf": "slides/matroid-representations.pdf",
-      "status": "published"
+      "status": "published",
+      "image": "matroid-representations-preview.png",
+      "image_alt": "A matrix and its associated bipartite graph, with nonzero entries corresponding to edges.",
+      "preview_page": 15
     }
   ],
   "cv": "cv.pdf",

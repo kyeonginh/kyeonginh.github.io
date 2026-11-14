@@ -6,7 +6,8 @@
 !/assets/documents/slides/
 /assets/documents/slides/*
 !/assets/documents/slides/matroid-representations.pdf
-/assets/images/
+/assets/images/*
+!/assets/images/matroid-representations-preview.png
 /screenshots/
 __pycache__/
 .DS_Store

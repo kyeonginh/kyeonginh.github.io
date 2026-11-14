@@ -1,8 +1,13 @@
 <article class="seminar-note">
-  <h3><a href="${prefix}assets/documents/${pdf}">${title}</a></h3>
-  <p class="seminar-meta">${date} · ${source}</p>
-  <p>${summary}</p>
-  <div class="note-links">
-    <a href="${prefix}assets/documents/${pdf}" aria-label="Read ${title} PDF">PDF <span aria-hidden="true">↗</span></a>
+  <a class="seminar-preview" href="${prefix}assets/documents/${pdf}#page=${preview_page}" aria-label="View slide ${preview_page} of ${title}">
+    <img src="${prefix}assets/images/${image}" alt="${image_alt}" width="1440" height="810" loading="lazy">
+  </a>
+  <div class="seminar-copy">
+    <h3><a href="${prefix}assets/documents/${pdf}">${title}</a></h3>
+    <p class="seminar-meta">${date} · ${source}</p>
+    <p>${summary}</p>
+    <div class="note-links">
+      <a href="${prefix}assets/documents/${pdf}" aria-label="Read ${title} PDF">PDF <span aria-hidden="true">↗</span></a>
+    </div>
   </div>
 </article>
