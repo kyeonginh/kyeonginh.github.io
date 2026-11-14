@@ -7,9 +7,11 @@
 /assets/documents/slides/*
 !/assets/documents/slides/matroid-representations.pdf
 !/assets/documents/slides/greedy-algorithm-and-matroids.pdf
+!/assets/documents/slides/combinatorial-geometries-and-geometric-lattices.pdf
 /assets/images/*
 !/assets/images/matroid-representations-preview.png
 !/assets/images/greedy-algorithm-and-matroids-preview.png
+!/assets/images/combinatorial-geometries-and-geometric-lattices-preview.png
 /screenshots/
 __pycache__/
 .DS_Store

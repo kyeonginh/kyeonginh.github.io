@@ -30,6 +30,17 @@
       "image": "greedy-algorithm-and-matroids-preview.png",
       "image_alt": "A proof using weights 1, epsilon, and 0 to show that failure of augmentation can make the greedy algorithm suboptimal.",
       "preview_page": 9
+    },
+    {
+      "title": "Combinatorial Geometries and Geometric Lattices",
+      "date": "September 22, 2025",
+      "source": "van Lint–Wilson, A Course in Combinatorics, Ch. 23",
+      "summary": "The correspondence between combinatorial geometries and geometric lattices, using semimodularity to establish the covering property.",
+      "pdf": "slides/combinatorial-geometries-and-geometric-lattices.pdf",
+      "status": "published",
+      "image": "combinatorial-geometries-and-geometric-lattices-preview.png",
+      "image_alt": "An inductive proof along a maximal chain showing how semimodularity establishes the covering property for flats.",
+      "preview_page": 17
     }
   ],
   "cv": "cv.pdf",
