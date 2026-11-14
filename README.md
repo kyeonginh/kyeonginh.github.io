@@ -165,8 +165,17 @@ CV는 소개 문단 아래의 **Here is my CV.** 문장에서 연결합니다. `
 
 발표 자료는 `site/content.json`의 `notes`에서 편집합니다. 첫 공개본은 2026년 4월 13일 Matroid Representations 발표이며, 파일은 `assets/documents/slides/matroid-representations.pdf`입니다. 제목과 PDF 링크가 같은 파일을 엽니다.
 
-새 자료를 추가할 때에는 `notes` 항목과 함께 `.gitignore`에 해당 PDF 파일만 명시적으로 허용합니다. 현재 CV와 Matroid Representations·Greedy Algorithm·Combinatorial Geometries 발표 PDF를 공개합니다. 원본 LaTeX, 검토 보고서, 다른 발표와 교재 PDF는 업로드하지 않습니다. 대표 슬라이드 이미지는 `assets/images/matroid-representations-preview.png`에 있습니다. `notes`의 `image`, `image_alt`, `preview_page`가 미리보기와 PDF 시작 페이지를 정합니다. 데스크톱에서는 이미지·설명을 나란히, 모바일에서는 위아래로 배치합니다.
+새 자료를 추가할 때에는 `notes` 항목과 함께 `.gitignore`에 해당 PDF 파일만 명시적으로 허용합니다. 현재 CV와 선별한 세미나 자료 5편을 공개합니다. 원본 LaTeX, 검토 보고서, 다른 발표와 교재 PDF는 업로드하지 않습니다. 대표 슬라이드 이미지는 `assets/images/matroid-representations-preview.png`에 있습니다. `notes`의 `image`, `image_alt`, `preview_page`가 미리보기와 PDF 시작 페이지를 정합니다. 데스크톱에서는 이미지·설명을 나란히, 모바일에서는 위아래로 배치합니다.
 
 Greedy 자료는 `assets/documents/slides/greedy-algorithm-and-matroids.pdf`이며, augmentation 실패에 대한 가중치 반례를 다룬 9페이지를 미리보기로 사용합니다. 표시 날짜는 [공식 세미나 일정](https://sites.google.com/view/readingseminar/matroid-theory)의 §1.8 발표일인 January 19, 2026을 따릅니다. §6.4 Representations는 April 13, 2026입니다. 두 PDF 표지도 같은 날짜로 맞췄습니다.
 
 Combinatorial Geometries 자료는 `assets/documents/slides/combinatorial-geometries-and-geometric-lattices.pdf`이며, semimodularity를 maximal chain에 따라 적용하는 17페이지를 미리보기로 사용합니다. 표시 날짜는 승인된 PDF 표지의 September 22, 2025입니다.
+
+## 발표 목록 순서와 추가 자료
+
+목록은 `date_iso`(YYYY-MM-DD)를 기준으로 최신 발표부터 표시합니다. `date`는 화면에 보이는 날짜입니다. 두 값을 함께 수정하세요. 첫 3편 제한은 없으며 공개된 5편을 모두 표시합니다.
+
+- Dowling Geometries: April 27, 2026. 공식 Matroid Theory 세미나 일정의 §6.10 발표일. 대표 미리보기 9페이지.
+- (0,1)-Matrices and Latin Squares: June 4, 2025. 원본 발표 표지 날짜 유지. 대표 미리보기 20페이지.
+
+PDF와 미리보기는 각각 `assets/documents/slides/`, `assets/images/`에 두며 `.gitignore`에는 승인한 파일만 허용합니다.

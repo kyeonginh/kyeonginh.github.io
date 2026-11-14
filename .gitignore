@@ -15,3 +15,7 @@
 /screenshots/
 __pycache__/
 .DS_Store
+!/assets/documents/slides/dowling-geometries.pdf
+!/assets/images/dowling-geometries-preview.png
+!/assets/documents/slides/latin-squares.pdf
+!/assets/images/latin-squares-preview.png

@@ -86,7 +86,7 @@ def page(content, notes, title, body, preview=False, prefix='', active=''):
 
 def home(content, notes):
     """홈페이지의 각 부분을 조립합니다. 문장은 content.json에서 읽습니다."""
-    expositions = render('expositions', notes=note_rows(notes[:3])) if notes else ''
+    expositions = render('expositions', notes=note_rows(notes)) if notes else ''
     portrait = content.get('portrait')
     portrait_html = render('portrait', file=escape(portrait['file']), alt=escape(portrait['alt'])) if portrait else ''
     cv_reference = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
@@ -129,6 +129,7 @@ def copy_assets(output, content, notes):
 def build(preview=False):
     content = json.loads((SITE / 'content.json').read_text(encoding='utf-8'))
     notes = [note for note in content['notes'] if note['status'] == 'published' or preview]
+    notes.sort(key=lambda note: note['date_iso'], reverse=True)
     output = ROOT / ('preview' if preview else 'dist')
     if output.exists():
         shutil.rmtree(output)

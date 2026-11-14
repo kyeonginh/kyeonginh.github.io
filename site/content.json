@@ -10,6 +10,18 @@
   "research_interests": "My interests are in combinatorial optimization, particularly the use of combinatorial structure and polyhedral methods in algorithm design.",
   "notes": [
     {
+      "title": "Dowling Geometries",
+      "date": "April 27, 2026",
+      "date_iso": "2026-04-27",
+      "source": "Oxley, Matroid Theory, §6.10",
+      "summary": "Biased graphs · Balanced cycles · Matroid representability",
+      "pdf": "slides/dowling-geometries.pdf",
+      "status": "published",
+      "image": "dowling-geometries-preview.png",
+      "image_alt": "A proof using three path products to show that two balanced cycles in a theta graph force the third to be balanced.",
+      "preview_page": 9
+    },
+    {
       "title": "Constructing Matroid Representations",
       "date": "April 13, 2026",
       "source": "Oxley, Matroid Theory, §6.4",
@@ -18,7 +30,8 @@
       "status": "published",
       "image": "matroid-representations-preview.png",
       "image_alt": "A matrix and its associated bipartite graph, with nonzero entries corresponding to edges.",
-      "preview_page": 15
+      "preview_page": 15,
+      "date_iso": "2026-04-13"
     },
     {
       "title": "The Greedy Algorithm and Matroids",
@@ -29,7 +42,8 @@
       "status": "published",
       "image": "greedy-algorithm-and-matroids-preview.png",
       "image_alt": "A proof using weights 1, epsilon, and 0 to show that failure of augmentation can make the greedy algorithm suboptimal.",
-      "preview_page": 9
+      "preview_page": 9,
+      "date_iso": "2026-01-19"
     },
     {
       "title": "Combinatorial Geometries and Geometric Lattices",
@@ -40,7 +54,20 @@
       "status": "published",
       "image": "combinatorial-geometries-and-geometric-lattices-preview.png",
       "image_alt": "An inductive proof along a maximal chain showing how semimodularity establishes the covering property for flats.",
-      "preview_page": 17
+      "preview_page": 17,
+      "date_iso": "2025-09-22"
+    },
+    {
+      "title": "(0,1)-Matrices and Latin Squares",
+      "date": "June 4, 2025",
+      "date_iso": "2025-06-04",
+      "source": "van Lint–Wilson, A Course in Combinatorics, Ch. 16–17",
+      "summary": "Majorization · Matrix decomposition · Latin square completion",
+      "pdf": "slides/latin-squares.pdf",
+      "status": "published",
+      "image": "latin-squares-preview.png",
+      "image_alt": "A proof decomposing a missing-symbol matrix into matrices with one 1 per row and at most one 1 per column.",
+      "preview_page": 20
     }
   ],
   "cv": "cv.pdf",
