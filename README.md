@@ -86,7 +86,7 @@ JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 �
 
 기존 두 문단의 순서를 바꾸려면 위의 `<p>` 줄 순서만 바꾸면 됩니다. 짧은 새 문단은 `<p>새 문장</p>`으로 직접 넣어도 됩니다. `${...}`의 이름을 새로 만들려면 `build.py`에도 연결해야 하므로, 처음에는 기존 항목을 편집하는 편이 간단합니다.
 
-`base.html`은 페이지 공통 틀, `home.html`은 첫 화면 본문입니다. `note*.html`과 `archive*.html`은 나중에 발표 자료를 공개할 때 사용할 틀입니다. 세미나에 관한 소개는 `expositions.html`과 `archive.html`에 두고, 첫 화면에서는 별도로 서술하지 않습니다.
+`base.html`은 페이지 공통 틀, `home.html`은 첫 화면 본문입니다. `expositions.html`은 첫 화면의 Seminar Slides 섹션이고, `note-row.html`은 제목·날짜·설명·PDF 링크 한 항목입니다. 별도 아카이브와 상세 페이지는 현재 생성하지 않습니다.
 
 ## 5. 디자인 수정 — `style.css`
 
@@ -146,7 +146,14 @@ CSS는 빌드할 때 내용에 따른 버전 파일명으로 출력됩니다. �
 CV는 소개 문단 아래의 **Here is my CV.** 문장에서 연결합니다. `CV`를 누르면 PDF가 열립니다.
 
 ```json
-"notes": [],
+"notes": [{
+  "title": "Constructing Matroid Representations",
+  "date": "April 13, 2026",
+  "source": "Oxley, Matroid Theory, §6.4",
+  "summary": "Fundamental circuits, determinant conditions, and graph-based normalization of representations.",
+  "pdf": "slides/matroid-representations.pdf",
+  "status": "published"
+}],
 "cv": "cv.pdf"
 ```
 
@@ -156,4 +163,6 @@ CV는 소개 문단 아래의 **Here is my CV.** 문장에서 연결합니다. `
 - 갱신 방법: 원본 프로젝트에서 새 CV를 컴파일한 뒤 공개 파일을 교체하고 commit·push합니다. 링크 주소는 유지됩니다.
 - 일시적으로 숨기려면 `cv`를 `null`로 바꿉니다. Git 기록에 올라간 기존 PDF까지 삭제되는 것은 아닙니다.
 
-발표 자료는 아직 공개하지 않습니다. `notes`는 빈 배열로 유지하고, `.gitignore`도 `assets/documents/cv.pdf` 한 파일만 허용합니다. 다른 문서와 발표 이미지 폴더는 계속 업로드에서 제외합니다.
+발표 자료는 `site/content.json`의 `notes`에서 편집합니다. 첫 공개본은 2026년 4월 13일 Matroid Representations 발표이며, 파일은 `assets/documents/slides/matroid-representations.pdf`입니다. 제목과 PDF 링크가 같은 파일을 엽니다.
+
+새 자료를 추가할 때에는 `notes` 항목과 함께 `.gitignore`에 해당 PDF 파일만 명시적으로 허용합니다. 현재 CV와 이 발표 PDF만 공개합니다. 원본 LaTeX, 검토 보고서, 다른 발표와 교재 PDF는 업로드하지 않습니다. 썸네일도 사용하지 않습니다.

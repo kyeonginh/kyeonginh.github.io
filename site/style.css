@@ -219,3 +219,11 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
   .section { break-inside: avoid; }
   .reveal-ready { opacity: 1; transform: none; }
 }
+
+/* 단일 자료부터 시작하는 간단한 발표 목록 */
+.seminar-note { padding: 0 0 12px; max-width: 780px; }
+.seminar-note + .seminar-note { border-top: 1px solid var(--line); padding-top: 26px; margin-top: 20px; }
+.seminar-note h3 { font-size: 22px; margin-bottom: 10px; }
+.seminar-note h3 a { text-decoration: none; }
+.seminar-note > p { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+.seminar-note > .seminar-meta { font-size: 13px; margin-bottom: 12px; }

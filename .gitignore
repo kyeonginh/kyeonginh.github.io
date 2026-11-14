@@ -3,6 +3,9 @@
 /preview-materials/
 /assets/documents/*
 !/assets/documents/cv.pdf
+!/assets/documents/slides/
+/assets/documents/slides/*
+!/assets/documents/slides/matroid-representations.pdf
 /assets/images/
 /screenshots/
 __pycache__/

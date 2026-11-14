@@ -63,7 +63,7 @@ def navigation(content, notes, prefix, active):
         ('index.html#about', 'About', 'home'),
     ]
     if notes:
-        links.append(('archive.html', 'Notes', 'notes'))
+        links.append(('index.html#seminar-slides', 'Slides', 'notes'))
     return '\n'.join(
         render('navigation-link', href=escape(prefix + href), label=escape(label),
                current=' aria-current="page"' if key == active else '')
@@ -118,9 +118,12 @@ def copy_assets(output, content, notes):
     for note in notes:
         folder = ROOT / ('assets/documents' if note['status'] == 'published' else 'preview-materials')
         (assets / 'documents').mkdir(exist_ok=True)
-        (assets / 'images').mkdir(exist_ok=True)
-        shutil.copyfile(folder / note['pdf'], assets / 'documents' / note['pdf'])
-        shutil.copyfile(ROOT / 'assets/images' / note['image'], assets / 'images' / note['image'])
+        destination = assets / 'documents' / note['pdf']
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(folder / note['pdf'], destination)
+        if note.get('image'):
+            (assets / 'images').mkdir(exist_ok=True)
+            shutil.copyfile(ROOT / 'assets/images' / note['image'], assets / 'images' / note['image'])
 
 
 def build(preview=False):
@@ -143,8 +146,8 @@ def build(preview=False):
     write('index.html', 'About', home(content, notes), active='home')
     write('404.html', 'Page not found', render('not-found'), prefix='/')
 
-    # 나중에 공개 승인된 발표를 추가했을 때만 목록과 상세 페이지를 만듭니다.
-    if notes:
+    # 별도 아카이브가 필요해졌을 때만 활성화합니다.
+    if notes and content.get('archive_enabled', False):
         fields = dict.fromkeys(note['field'] for note in notes)
         groups = '\n'.join(
             render('archive-group', field=escape(field), notes=note_rows([n for n in notes if n['field'] == field]))

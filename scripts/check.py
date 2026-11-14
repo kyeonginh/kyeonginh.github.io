@@ -64,7 +64,7 @@ approved = {n['pdf'] for n in content['notes'] if n['status'] == 'published'}
 if content.get('cv'):
     approved.add(content['cv'])
 for p in root.rglob('*.pdf'):
-    if p.name not in approved:
+    if p.relative_to(root / 'assets/documents').as_posix() not in approved:
         errors.append(f'Unapproved document: {p.name}')
 if errors:
     raise SystemExit('\n'.join(errors))

@@ -8,7 +8,16 @@
   "github": "https://github.com/kyeonginh",
   "about": "I am a research engineer at [ENERZAi](https://enerzai.com), working on machine-learning inference optimization. I received my B.S. in [Industrial Engineering](https://ie.snu.ac.kr/en/) from [Seoul National University](https://en.snu.ac.kr/index.html).",
   "research_interests": "My interests are in combinatorial optimization, particularly the use of combinatorial structure and polyhedral methods in algorithm design.",
-  "notes": [],
+  "notes": [
+    {
+      "title": "Constructing Matroid Representations",
+      "date": "April 13, 2026",
+      "source": "Oxley, Matroid Theory, §6.4",
+      "summary": "Fundamental circuits, determinant conditions, and graph-based normalization of representations.",
+      "pdf": "slides/matroid-representations.pdf",
+      "status": "published"
+    }
+  ],
   "cv": "cv.pdf",
   "portrait": {
     "file": "profile.jpeg",

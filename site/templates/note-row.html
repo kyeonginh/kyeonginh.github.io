@@ -1,16 +1,8 @@
-<article class="note-row">
-  <a class="note-thumb" href="${prefix}notes/${slug}.html" tabindex="-1" aria-hidden="true">
-    <img src="${prefix}assets/images/${image}" alt="" width="960" height="540" loading="lazy">
-  </a>
-  <div class="note-copy">
-    <p class="eyebrow">${field} <span> / ${year}</span></p>
-    <h3><a href="${prefix}notes/${slug}.html">${title}</a></h3>
-    <p>${summary}</p>
-    <div class="note-links">
-      <a href="${prefix}notes/${slug}.html">Overview <span aria-hidden="true">→</span></a>
-      <a href="${prefix}assets/documents/${pdf}" aria-label="Read slides for ${title}">
-        Slides <span class="file-tag">PDF</span>
-      </a>
-    </div>
+<article class="seminar-note">
+  <h3><a href="${prefix}assets/documents/${pdf}">${title}</a></h3>
+  <p class="seminar-meta">${date} · ${source}</p>
+  <p>${summary}</p>
+  <div class="note-links">
+    <a href="${prefix}assets/documents/${pdf}" aria-label="Read ${title} PDF">PDF <span aria-hidden="true">↗</span></a>
   </div>
 </article>
