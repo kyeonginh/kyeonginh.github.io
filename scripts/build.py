@@ -23,6 +23,7 @@ def main():
     (output / 'assets').mkdir()
     shutil.copyfile(ROOT / 'site/style.css', output / 'assets/style.css')
     shutil.copyfile(ROOT / 'site/favicon.svg', output / 'assets/favicon.svg')
+    shutil.copyfile(ROOT / 'site/interactions.js', output / 'assets/interactions.js')
     cv = content.get('cv')
     if cv:
         (output / 'assets/documents').mkdir()
@@ -43,7 +44,7 @@ def main():
         shutil.copyfile(ROOT / 'assets/images' / note['image'], image_dir / note['image'])
 
     def page(title, body, prefix='', active=''):
-        nav = [('', 'About', 'home')]
+        nav = [('index.html#about', 'About', 'home'), ('index.html#research', 'Research', 'research'), ('index.html#contact', 'Contact', 'contact')]
         if notes:
             nav.append(('archive.html', 'Notes', 'notes'))
         if cv:
@@ -55,7 +56,8 @@ def main():
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} · {esc(content['name'])}</title>
 <meta name="description" content="{esc(content['name'])} — combinatorial optimization, polyhedral methods, and mathematical expositions.">
-<meta name="theme-color" content="#f8f7f3">{robots}
+<meta name="theme-color" content="#091426">{robots}
+<meta name="color-scheme" content="dark"><script defer src="{prefix}assets/interactions.js"></script>
 <link rel="icon" type="image/svg+xml" href="{prefix}assets/favicon.svg"><link rel="stylesheet" href="{prefix}assets/style.css"></head>
 <body>{banner}<a class="skip-link" href="#main">Skip to content</a>
 <header class="header"><a class="wordmark" href="{prefix}index.html">{esc(content['name'])}</a><nav aria-label="Main navigation">{links}</nav></header>
@@ -74,11 +76,11 @@ def main():
     selected = f'''<section id="expositions" class="section"><div class="section-heading"><div><p class="eyebrow">Reading seminar materials</p><h2>Mathematical expositions</h2></div><a class="text-link" href="archive.html">All notes <span aria-hidden="true">→</span></a></div><p class="section-intro">Selected presentations based on textbooks in combinatorics and matroid theory.</p><div class="notes">{note_rows(notes[:3])}</div></section>''' if notes else ''
     cv_button = f'<a class="cv-button" href="assets/documents/{esc(cv)}">Curriculum vitae <span class="file-tag">PDF</span><span aria-hidden="true">↗</span></a>' if cv else ''
     body = f'''<main id="main" class="home">
-<section class="intro" aria-labelledby="name"><aside class="identity"><p class="eyebrow">Personal academic website</p><h1 id="name">Kyeongin<br> Hong<span class="name-dot">.</span></h1><p class="location">{esc(content['location'])}</p>{cv_button}<div class="contact-links"><a href="mailto:{esc(content['email'])}">Email</a><a href="{esc(content['github'])}">GitHub <span aria-hidden="true">↗</span></a></div></aside>
+<section id="about" class="intro" aria-labelledby="name"><aside class="identity"><p class="eyebrow">Combinatorial optimization</p><h1 id="name">Kyeongin<br> Hong<span class="name-dot">.</span></h1><p class="location">{esc(content['location'])}</p>{cv_button}<div class="contact-links"><a href="mailto:{esc(content['email'])}">Email <span aria-hidden="true">↗</span></a><a href="{esc(content['github'])}">GitHub <span aria-hidden="true">↗</span></a></div></aside>
 <div class="intro-copy"><p class="lead">{esc(content['intro'])}</p><p>{esc(content['about'])}</p><p>{esc(content['background'])}</p></div></section>
-<section class="section interests" aria-labelledby="interests-heading"><div><p class="eyebrow">Research interests</p><h2 id="interests-heading">Structure, formulations,<br> and algorithms.</h2></div><ul class="interest-list">{interests}</ul></section>
+<section id="research" class="section interests" aria-labelledby="interests-heading"><div><p class="eyebrow">Research interests</p><h2 id="interests-heading">Structure, formulations,<br> and algorithms.</h2></div><ul class="interest-list">{interests}</ul></section>
 {selected}
-<section class="section contact-section"><div><p class="eyebrow">Get in touch</p><h2>Contact</h2></div><div><p>For correspondence, please reach me by email.</p><a class="contact-email" href="mailto:{esc(content['email'])}">{esc(content['email'])}<span aria-hidden="true"> ↗</span></a></div></section>
+<section id="contact" class="section contact-section"><div><p class="eyebrow">Get in touch</p><h2>Contact</h2></div><div><p>For correspondence, please reach me by email.</p><a class="contact-email" href="mailto:{esc(content['email'])}">{esc(content['email'])}<span aria-hidden="true"> ↗</span></a></div></section>
 </main>'''
     (output / 'index.html').write_text(page('About', body, active='home'))
     groups = ''
