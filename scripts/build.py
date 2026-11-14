@@ -8,6 +8,7 @@
 """
 import argparse
 import html
+import hashlib
 import json
 import re
 import shutil
@@ -16,6 +17,13 @@ from string import Template
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'site'
+
+
+
+def stylesheet_name():
+    """디자인이 바뀌면 파일명도 바뀌어 브라우저의 이전 CSS 캐시를 피합니다."""
+    digest = hashlib.sha256((SITE / 'style.css').read_bytes()).hexdigest()[:12]
+    return f'style.{digest}.css'
 
 
 def escape(value):
@@ -71,7 +79,7 @@ def page(content, notes, title, body, preview=False, prefix='', active=''):
               '<span>· Presentation selections are provisional</span></div>') if preview else ''
     return render(
         'base', title=escape(title), name=escape(content['name']),
-        email=escape(content['email']), prefix=prefix, body=body,
+        email=escape(content['email']), prefix=prefix, body=body, stylesheet=stylesheet_name(),
         navigation=navigation(content, notes, prefix, active),
         preview_banner=banner,
         robots='<meta name="robots" content="noindex, nofollow">' if preview else '',
@@ -99,7 +107,8 @@ def copy_assets(output, content, notes):
     """공개 대상만 복사합니다. cv=null, notes=[]이면 첨부파일을 출력하지 않습니다."""
     assets = output / 'assets'
     assets.mkdir()
-    for name in ['style.css', 'favicon.svg', 'interactions.js']:
+    shutil.copyfile(SITE / 'style.css', assets / stylesheet_name())
+    for name in ['favicon.svg', 'interactions.js']:
         shutil.copyfile(SITE / name, assets / name)
     if content.get('portrait'):
         (assets / 'profile').mkdir()
