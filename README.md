@@ -119,7 +119,7 @@ JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 �
 
 프로필 사진은 `assets/profile/profile.jpeg`에 있습니다. 같은 파일을 교체하면 사진을 바꿀 수 있습니다. `assets/profile/`은 공개 프로필 사진 전용이며, 미공개 발표 이미지용 `assets/images/`와 구분합니다.
 
-화면에서의 크롭은 `.profile-photo`의 `aspect-ratio`와 `.profile-photo img`의 `object-position`으로 조정합니다. 원본 파일의 픽셀은 수정하지 않습니다. 현재는 얼굴과 인형이 함께 보이도록 4:3 비율을 사용합니다.
+화면에서의 크롭은 `.profile-photo`의 `--portrait-zoom`과 `--portrait-focus-x`·`--portrait-focus-y`로 조정합니다. 원본 파일의 픽셀은 수정하지 않습니다. 현재는 정사각형 프레임 안에서 1.45배 확대해 얼굴과 인형을 함께 보여줍니다. 사진 너비는 데스크톱 320px, 작은 데스크톱 280px, 모바일 최대 300px이며 좁은 화면에 맞춰 줄어듭니다.
 
 ## 6. 확인하고 공개하기
 
