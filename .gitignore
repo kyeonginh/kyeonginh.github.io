@@ -6,8 +6,10 @@
 !/assets/documents/slides/
 /assets/documents/slides/*
 !/assets/documents/slides/matroid-representations.pdf
+!/assets/documents/slides/greedy-algorithm-and-matroids.pdf
 /assets/images/*
 !/assets/images/matroid-representations-preview.png
+!/assets/images/greedy-algorithm-and-matroids-preview.png
 /screenshots/
 __pycache__/
 .DS_Store

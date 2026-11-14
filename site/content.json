@@ -19,6 +19,17 @@
       "image": "matroid-representations-preview.png",
       "image_alt": "A matrix and its associated bipartite graph, with nonzero entries corresponding to edges.",
       "preview_page": 15
+    },
+    {
+      "title": "The Greedy Algorithm and Matroids",
+      "date": "July 13, 2026",
+      "source": "Oxley, Matroid Theory, §1.8",
+      "summary": "Why greedy optimization works on matroids, and how a failure of augmentation produces a counterexample.",
+      "pdf": "slides/greedy-algorithm-and-matroids.pdf",
+      "status": "published",
+      "image": "greedy-algorithm-and-matroids-preview.png",
+      "image_alt": "A proof using weights 1, epsilon, and 0 to show that failure of augmentation can make the greedy algorithm suboptimal.",
+      "preview_page": 9
     }
   ],
   "cv": "cv.pdf",
