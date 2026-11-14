@@ -39,7 +39,6 @@ def note_rows(notes, prefix=''):
 def navigation(content, notes, prefix, active):
     links = [
         ('index.html#about', 'About', 'home'),
-        ('index.html#research', 'Research', 'research'),
         ('index.html#contact', 'Contact', 'contact'),
     ]
     if notes:
@@ -68,17 +67,14 @@ def page(content, notes, title, body, preview=False, prefix='', active=''):
 
 def home(content, notes):
     """홈페이지의 각 부분을 조립합니다. 문장은 content.json에서 읽습니다."""
-    interests = '\n'.join(render('interest', title=escape(item['title']), text=escape(item['text']))
-                          for item in content['interests'])
     expositions = render('expositions', notes=note_rows(notes[:3])) if notes else ''
     cv_button = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
     values = {key: escape(content[key]) for key in
-              ['location', 'email', 'github', 'intro', 'about', 'background', 'eyebrow', 'contact_text']}
+              ['location', 'email', 'github', 'about', 'research_interests', 'contact_text']}
     return render(
-        'home', **values, interests=interests, expositions=expositions,
+        'home', **values, expositions=expositions,
         cv_button=cv_button,
         name_lines='<br>\n'.join(escape(line) for line in content['name_lines']),
-        research_heading='<br>\n'.join(escape(line) for line in content['research_heading']),
     )
 
 

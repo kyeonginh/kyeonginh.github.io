@@ -35,10 +35,10 @@ python3 scripts/serve.py
 
 ## 3. 문구 수정 — `content.json`
 
-예를 들어 첫 소개 문장은 다음 항목입니다.
+예를 들어 직무·학력을 소개하는 첫 문단은 다음 항목입니다.
 
 ```json
-"intro": "I study combinatorial optimization, with a particular interest in combinatorial structure and polyhedral methods."
+"about": "I am a research engineer at ENERZAi, working on machine-learning inference optimization. I received my B.S. in Industrial Engineering from Seoul National University."
 ```
 
 큰따옴표 안의 문장만 바꾸면 됩니다.
@@ -47,12 +47,9 @@ python3 scripts/serve.py
 |---|---|
 | `name` | 상단 이름, 브라우저 탭, 하단 이름 |
 | `name_lines` | 첫 화면의 큰 이름. 배열의 각 항목이 한 줄 |
-| `eyebrow` | 큰 이름 위의 작은 문구 |
 | `location`, `email`, `github` | 위치와 연락처 |
-| `intro` | 오른쪽의 큰 소개 문장 |
-| `about`, `background` | 그 아래의 두 문단 |
-| `research_heading` | 연구 관심사 왼쪽 제목. 각 항목이 한 줄 |
-| `interests` | 연구 관심사 목록의 `title`과 `text` |
+| `about` | 현재 직무와 학력을 소개하는 첫 문단 |
+| `research_interests` | 관심 분야를 소개하는 두 번째 문단 |
 | `contact_text` | 이메일 주소 위의 안내 문장 |
 
 예를 들어 이름을 한 줄로 표시하려면 다음과 같이 바꿉니다.
@@ -61,38 +58,34 @@ python3 scripts/serve.py
 "name_lines": ["Kyeongin Hong"]
 ```
 
-연구 관심사 항목은 아래 형식으로 추가·삭제할 수 있습니다.
+연구 관심사는 `research_interests`에 일반 문장으로 적습니다. 별도 제목이나 세 항목으로 나누지 않습니다.
 
 ```json
-{
-  "title": "LP formulations",
-  "text": "Using combinatorial structure to construct and strengthen linear programming relaxations."
-}
+"research_interests": "My interests are in combinatorial optimization, particularly the use of combinatorial structure and polyhedral methods in algorithm design."
 ```
 
 JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 쉼표를 넣지 않습니다.** 문장 안에 큰따옴표가 필요하면 `\"`로 씁니다. JSON에는 주석을 쓸 수 없습니다. 문구는 일반 텍스트로 처리하므로 HTML 태그를 넣어도 디자인으로 적용되지 않습니다.
 
 ## 4. 배치 수정 — `home.html`
 
-템플릿의 `${intro}`는 `content.json`의 소개 문장이 들어갈 자리입니다.
+템플릿의 `${about}`과 `${research_interests}`는 `content.json`의 두 문단이 들어갈 자리입니다.
 
 ```html
 <div class="intro-copy">
-  <p class="lead">${intro}</p>
   <p>${about}</p>
-  <p>${background}</p>
+  <p>${research_interests}</p>
 </div>
 ```
 
 - `<p>...</p>` 하나가 문단 하나입니다.
 - `<h1>`, `<h2>`, `<h3>`는 제목입니다.
 - `<section>`은 화면의 큰 구역입니다.
-- `class="lead"`는 CSS에서 `.lead`라는 디자인 규칙을 적용한다는 뜻입니다.
-- `id="research"`는 상단 Research 메뉴가 이동할 위치입니다.
+- `class="intro-copy"`는 CSS에서 `.intro-copy`라는 디자인 규칙을 적용한다는 뜻입니다.
+- `id="about"`은 상단 About 메뉴가 이동할 위치입니다.
 
-기존 세 문단의 순서를 바꾸려면 위의 `<p>` 줄 순서만 바꾸면 됩니다. 짧은 새 문단은 `<p>새 문장</p>`으로 직접 넣어도 됩니다. `${...}`의 이름을 새로 만들려면 `build.py`에도 연결해야 하므로, 처음에는 기존 항목을 편집하는 편이 간단합니다.
+기존 두 문단의 순서를 바꾸려면 위의 `<p>` 줄 순서만 바꾸면 됩니다. 짧은 새 문단은 `<p>새 문장</p>`으로 직접 넣어도 됩니다. `${...}`의 이름을 새로 만들려면 `build.py`에도 연결해야 하므로, 처음에는 기존 항목을 편집하는 편이 간단합니다.
 
-`base.html`은 페이지 공통 틀, `home.html`은 첫 화면 본문입니다. `note*.html`과 `archive*.html`은 나중에 발표 자료를 공개할 때 사용할 틀입니다.
+`base.html`은 페이지 공통 틀, `home.html`은 첫 화면 본문입니다. `note*.html`과 `archive*.html`은 나중에 발표 자료를 공개할 때 사용할 틀입니다. 세미나에 관한 소개는 `expositions.html`과 `archive.html`에 두고, 첫 화면에서는 별도로 서술하지 않습니다.
 
 ## 5. 디자인 수정 — `style.css`
 
@@ -112,8 +105,7 @@ JSON에서는 항목 사이에 쉼표를 넣되, **마지막 항목 뒤에는 �
 |---|---|
 | `.intro` | 첫 화면의 두 열 배치와 위아래 여백 |
 | `.identity h1` | 큰 이름의 글꼴 크기와 줄 간격 |
-| `.lead` | 큰 소개 문장 |
-| `.interests`, `.interest-list` | 연구 관심사 배치 |
+| `.intro-copy > p` | 두 소개 문단의 글자 크기와 줄 간격 |
 | `.intro::before` | 흐릿하게 움직이는 푸른 배경 |
 | `.intro::after` | 아주 작은 점 무늬 |
 | `@keyframes navy-drift` | 배경이 움직이는 방식 |

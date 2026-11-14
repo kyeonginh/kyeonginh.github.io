@@ -80,7 +80,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 }
 .eyebrow { margin: 0 0 20px; color: var(--accent); font-size: 10px; font-weight: 500; letter-spacing: 1.9px; line-height: 1.6; text-transform: uppercase; }
 .eyebrow span { color: var(--muted); }
-.identity h1 { font-size: 76px; line-height: 1.04; font-weight: 500; letter-spacing: -3.6px; margin: 25px 0 21px; }
+.identity h1 { font-size: 76px; line-height: 1.04; font-weight: 500; letter-spacing: -3.6px; margin: 0 0 21px; }
 .location { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
 .contact-links { display: flex; align-items: center; gap: 24px; font-size: 13px; color: #d1def0; margin-top: 20px; }
 .contact-links a, .note-links a, .text-link, .contact-email { position: relative; display: inline-block; text-decoration: none; padding-bottom: 4px; }
@@ -92,18 +92,9 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .contact-email:hover > span, .contact-email:focus-visible > span { transform: translate(2px,-2px); }
 .note-links a:hover > span:not(.file-tag), .text-link:hover > span { transform: translateX(3px); }
 .intro-copy { min-width: 0; padding-top: 6px; }
-.lead { color: var(--ink); font-size: 29px; line-height: 1.5; letter-spacing: -.65px; margin-bottom: 29px; }
-.intro-copy > p:not(.lead) { color: var(--muted); font-size: 15px; line-height: 1.95; }
+.intro-copy > p { color: var(--muted); font-size: 15px; line-height: 1.95; }
 .intro-copy > p:last-child { margin-bottom: 0; }
 .section { border-top: 1px solid var(--line); padding: 44px 0 50px; }
-.interests { display: grid; grid-template-columns: 310px minmax(0,1fr); gap: 64px; }
-.interests .eyebrow { margin-bottom: 15px; }
-.interests h2 { font-size: 29px; line-height: 1.28; max-width: 290px; }
-.interest-list { margin: 0; padding: 0; list-style: none; }
-.interest-list li { display: grid; grid-template-columns: 173px minmax(0,1fr); gap: 24px; border-bottom: 1px solid var(--line); padding-bottom: 22px; margin-bottom: 22px; }
-.interest-list li:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
-.interest-list strong { font-size: 13px; font-weight: 550; }
-.interest-list span { color: var(--muted); font-size: 13px; line-height: 1.8; }
 .contact-section { display: grid; grid-template-columns: 310px minmax(0,1fr); gap: 64px; padding-bottom: 62px; }
 .contact-section .eyebrow { margin-bottom: 12px; }
 .contact-section p:not(.eyebrow) { color: var(--muted); font-size: 14px; margin-bottom: 10px; }
@@ -151,10 +142,8 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .reveal-ready.is-visible { opacity: 1; transform: none; }
 @media (max-width: 950px) {
   .header, .home, .inner, .footer { width: calc(100% - 64px); }
-  .intro, .interests, .contact-section { grid-template-columns: 240px minmax(0,1fr); gap: 38px; }
+  .intro, .contact-section { grid-template-columns: 240px minmax(0,1fr); gap: 38px; }
   .identity h1 { font-size: 60px; letter-spacing: -2.8px; }
-  .lead { font-size: 25px; }
-  .interest-list li { grid-template-columns: 1fr; gap: 7px; }
 }
 @media (max-width: 640px) {
   html { scroll-padding-top: 20px; }
@@ -165,18 +154,14 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
   .intro { grid-template-columns: 1fr; gap: 35px; padding: 48px 0 42px; }
   .intro::before { inset-block: -15px 0; animation-duration: 30s; }
   .intro::after { opacity: .3; }
-  .identity h1 { font-size: 64px; line-height: 1.03; margin: 19px 0; }
+  .identity h1 { font-size: 64px; line-height: 1.03; margin: 0 0 19px; }
   .identity .eyebrow { margin-bottom: 14px; }
   .location { margin-bottom: 18px; }
   .contact-links { margin-top: 14px; }
   .intro-copy { padding-top: 0; }
-  .lead { font-size: 25px; line-height: 1.5; margin-bottom: 23px; }
-  .intro-copy > p:not(.lead) { font-size: 14px; line-height: 1.9; }
-  .interests, .contact-section { grid-template-columns: 1fr; gap: 27px; }
+  .intro-copy > p { font-size: 14px; line-height: 1.9; }
+  .contact-section { grid-template-columns: 1fr; gap: 27px; }
   .section { padding: 33px 0 38px; }
-  .interests h2 { font-size: 27px; }
-  .interests h2 br { display: none; }
-  .interest-list li { padding-bottom: 18px; margin-bottom: 18px; }
   .contact-email { font-size: 22px; }
   .footer { flex-direction: column; gap: 6px; }
   .page-title h1 { font-size: 34px; }

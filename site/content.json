@@ -4,31 +4,11 @@
     "Kyeongin",
     "Hong"
   ],
-  "eyebrow": "Combinatorial optimization",
   "location": "Seoul, South Korea",
   "email": "kyeonginh@gmail.com",
   "github": "https://github.com/kyeonginh",
-  "intro": "I study combinatorial optimization, with a particular interest in combinatorial structure and polyhedral methods.",
-  "about": "I received my B.S. in Industrial Engineering from Seoul National University. I currently work as a research engineer at ENERZAi, optimizing machine-learning inference.",
-  "background": "Alongside my computational work, I have studied combinatorics and matroid theory in faculty-guided reading seminars with Professor Boram Park.",
-  "research_heading": [
-    "Structure, formulations,",
-    "and algorithms."
-  ],
-  "interests": [
-    {
-      "title": "LP formulations",
-      "text": "Using combinatorial structure to construct and strengthen linear programming relaxations."
-    },
-    {
-      "title": "Integrality and exactness",
-      "text": "Understanding when a relaxation is integral, or exact for a given objective."
-    },
-    {
-      "title": "Approximation algorithms",
-      "text": "Analyzing fractional extreme points to obtain provable guarantees."
-    }
-  ],
+  "about": "I am a research engineer at ENERZAi, working on machine-learning inference optimization. I received my B.S. in Industrial Engineering from Seoul National University.",
+  "research_interests": "My interests are in combinatorial optimization, particularly the use of combinatorial structure and polyhedral methods in algorithm design.",
   "contact_text": "For correspondence, please reach me by email.",
   "notes": [],
   "cv": null
