@@ -22,7 +22,7 @@
     },
     {
       "title": "The Greedy Algorithm and Matroids",
-      "date": "July 13, 2026",
+      "date": "January 19, 2026",
       "source": "Oxley, Matroid Theory, §1.8",
       "summary": "Why greedy optimization works on matroids, and how a failure of augmentation produces a counterexample.",
       "pdf": "slides/greedy-algorithm-and-matroids.pdf",
