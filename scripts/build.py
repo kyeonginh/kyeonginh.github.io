@@ -1,106 +1,140 @@
 #!/usr/bin/env python3
-"""Build a portable static academic website. Python 3.10+, standard library only."""
+"""content.json과 HTML 템플릿을 합쳐 dist/를 만드는 빌드 도구.
+
+문구 편집: site/content.json
+배치 편집: site/templates/*.html
+디자인 편집: site/style.css
+이 파일은 이 셋을 연결하며, 별도 Python 패키지는 필요하지 않습니다.
+"""
 import argparse
 import html
 import json
 import shutil
 from pathlib import Path
+from string import Template
 
 ROOT = Path(__file__).resolve().parents[1]
+SITE = ROOT / 'site'
 
-def esc(value):
+
+def escape(value):
+    """JSON의 글자를 HTML에서 안전하게 표시합니다. 예: & → &amp;"""
     return html.escape(str(value), quote=True)
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--preview', action='store_true', help='Include provisional presentation selections in an explicitly labelled local preview.')
-    args = parser.parse_args()
-    content = json.loads((ROOT / 'site/content.json').read_text())
-    output = ROOT / ('preview' if args.preview else 'dist')
+
+def render(template_name, **values):
+    """템플릿의 ${이름}을 전달한 값으로 채웁니다."""
+    source = (SITE / 'templates' / f'{template_name}.html').read_text(encoding='utf-8')
+    return Template(source).substitute(values)
+
+
+def note_values(note):
+    return {key: escape(value) for key, value in note.items() if key != 'topics'}
+
+
+def note_rows(notes, prefix=''):
+    return '\n'.join(render('note-row', prefix=prefix, **note_values(note)) for note in notes)
+
+
+def navigation(content, notes, prefix, active):
+    links = [
+        ('index.html#about', 'About', 'home'),
+        ('index.html#research', 'Research', 'research'),
+        ('index.html#contact', 'Contact', 'contact'),
+    ]
+    if notes:
+        links.append(('archive.html', 'Notes', 'notes'))
+    if content.get('cv'):
+        links.append((f"assets/documents/{content['cv']}", 'CV', 'cv'))
+    return '\n'.join(
+        render('navigation-link', href=escape(prefix + href), label=escape(label),
+               current=' aria-current="page"' if key == active else '')
+        for href, label, key in links
+    )
+
+
+def page(content, notes, title, body, preview=False, prefix='', active=''):
+    """모든 페이지의 공통 틀에 본문을 넣습니다. prefix는 하위 페이지의 상대 경로입니다."""
+    banner = ('<div class="preview-banner">Local preview '
+              '<span>· Presentation selections are provisional</span></div>') if preview else ''
+    return render(
+        'base', title=escape(title), name=escape(content['name']),
+        email=escape(content['email']), prefix=prefix, body=body,
+        navigation=navigation(content, notes, prefix, active),
+        preview_banner=banner,
+        robots='<meta name="robots" content="noindex, nofollow">' if preview else '',
+    )
+
+
+def home(content, notes):
+    """홈페이지의 각 부분을 조립합니다. 문장은 content.json에서 읽습니다."""
+    interests = '\n'.join(render('interest', title=escape(item['title']), text=escape(item['text']))
+                          for item in content['interests'])
+    expositions = render('expositions', notes=note_rows(notes[:3])) if notes else ''
+    cv_button = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
+    values = {key: escape(content[key]) for key in
+              ['location', 'email', 'github', 'intro', 'about', 'background', 'eyebrow', 'contact_text']}
+    return render(
+        'home', **values, interests=interests, expositions=expositions,
+        cv_button=cv_button,
+        name_lines='<br>\n'.join(escape(line) for line in content['name_lines']),
+        research_heading='<br>\n'.join(escape(line) for line in content['research_heading']),
+    )
+
+
+def copy_assets(output, content, notes):
+    """공개 대상만 복사합니다. cv=null, notes=[]이면 첨부파일을 출력하지 않습니다."""
+    assets = output / 'assets'
+    assets.mkdir()
+    for name in ['style.css', 'favicon.svg', 'interactions.js']:
+        shutil.copyfile(SITE / name, assets / name)
+    if content.get('cv'):
+        (assets / 'documents').mkdir(exist_ok=True)
+        shutil.copyfile(ROOT / 'assets/documents' / content['cv'], assets / 'documents' / content['cv'])
+    for note in notes:
+        folder = ROOT / ('assets/documents' if note['status'] == 'published' else 'preview-materials')
+        (assets / 'documents').mkdir(exist_ok=True)
+        (assets / 'images').mkdir(exist_ok=True)
+        shutil.copyfile(folder / note['pdf'], assets / 'documents' / note['pdf'])
+        shutil.copyfile(ROOT / 'assets/images' / note['image'], assets / 'images' / note['image'])
+
+
+def build(preview=False):
+    content = json.loads((SITE / 'content.json').read_text(encoding='utf-8'))
+    notes = [note for note in content['notes'] if note['status'] == 'published' or preview]
+    output = ROOT / ('preview' if preview else 'dist')
     if output.exists():
         shutil.rmtree(output)
     output.mkdir()
-    (output / 'assets').mkdir()
-    shutil.copyfile(ROOT / 'site/style.css', output / 'assets/style.css')
-    shutil.copyfile(ROOT / 'site/favicon.svg', output / 'assets/favicon.svg')
-    shutil.copyfile(ROOT / 'site/interactions.js', output / 'assets/interactions.js')
-    cv = content.get('cv')
-    if cv:
-        (output / 'assets/documents').mkdir()
-        shutil.copyfile(ROOT / 'assets/documents' / cv, output / 'assets/documents' / cv)
+    copy_assets(output, content, notes)
     (output / '.nojekyll').touch()
-    if args.preview:
-        (output / 'robots.txt').write_text('User-agent: *\nDisallow: /\n')
-    notes = [n for n in content['notes'] if n['status'] == 'published' or args.preview]
-    for note in notes:
-        folder = ROOT / ('preview-materials' if note['status'] != 'published' else 'assets/documents')
-        (output / 'assets/documents').mkdir(exist_ok=True)
-        target = output / 'assets/documents' / note['pdf']
-        source = folder / note['pdf']
-        if source.resolve() != target.resolve():
-            shutil.copyfile(source, target)
-        image_dir = output / 'assets/images'
-        image_dir.mkdir(exist_ok=True)
-        shutil.copyfile(ROOT / 'assets/images' / note['image'], image_dir / note['image'])
+    if preview:
+        (output / 'robots.txt').write_text('User-agent: *\nDisallow: /\n', encoding='utf-8')
 
-    def page(title, body, prefix='', active=''):
-        nav = [('index.html#about', 'About', 'home'), ('index.html#research', 'Research', 'research'), ('index.html#contact', 'Contact', 'contact')]
-        if notes:
-            nav.append(('archive.html', 'Notes', 'notes'))
-        if cv:
-            nav.append((f'assets/documents/{cv}', 'CV', 'cv'))
-        links = ''.join(f'<a href="{prefix}{href or "index.html"}"'+ (' aria-current="page"' if active == key else '') + f'>{label}</a>' for href,label,key in nav)
-        banner = '<div class="preview-banner">Local preview <span>· Presentation selections are provisional</span></div>' if args.preview else ''
-        robots = '<meta name="robots" content="noindex, nofollow">' if args.preview else ''
-        return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{esc(title)} · {esc(content['name'])}</title>
-<meta name="description" content="{esc(content['name'])} — combinatorial optimization, polyhedral methods, and mathematical expositions.">
-<meta name="theme-color" content="#091426">{robots}
-<meta name="color-scheme" content="dark"><script defer src="{prefix}assets/interactions.js"></script>
-<link rel="icon" type="image/svg+xml" href="{prefix}assets/favicon.svg"><link rel="stylesheet" href="{prefix}assets/style.css"></head>
-<body>{banner}<a class="skip-link" href="#main">Skip to content</a>
-<header class="header"><a class="wordmark" href="{prefix}index.html">{esc(content['name'])}</a><nav aria-label="Main navigation">{links}</nav></header>
-{body}
-<footer class="footer"><span>© 2026 {esc(content['name'])}</span><a href="mailto:{esc(content['email'])}">{esc(content['email'])}</a></footer>
-</body></html>'''
+    def write(filename, title, body, prefix='', active=''):
+        destination = output / filename
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(page(content, notes, title, body, preview, prefix, active), encoding='utf-8')
 
-    def note_rows(items, prefix=''):
-        return ''.join(f'''<article class="note-row">
-<a class="note-thumb" href="{prefix}notes/{esc(n['slug'])}.html" tabindex="-1" aria-hidden="true"><img src="{prefix}assets/images/{esc(n['image'])}" alt="" width="960" height="540" loading="lazy"></a>
-<div class="note-copy"><p class="eyebrow">{esc(n['field'])} <span> / {esc(n['year'])}</span></p>
-<h3><a href="{prefix}notes/{esc(n['slug'])}.html">{esc(n['title'])}</a></h3><p>{esc(n['summary'])}</p>
-<div class="note-links"><a href="{prefix}notes/{esc(n['slug'])}.html">Overview <span aria-hidden="true">→</span></a><a href="{prefix}assets/documents/{esc(n['pdf'])}" aria-label="Read slides for {esc(n['title'])}">Slides <span class="file-tag">PDF</span></a></div></div></article>''' for n in items)
+    write('index.html', 'About', home(content, notes), active='home')
+    write('404.html', 'Page not found', render('not-found'), prefix='/')
 
-    interests = ''.join(f'<li><strong>{esc(i["title"])}</strong><span>{esc(i["text"])}</span></li>' for i in content['interests'])
-    selected = f'''<section id="expositions" class="section"><div class="section-heading"><div><p class="eyebrow">Reading seminar materials</p><h2>Mathematical expositions</h2></div><a class="text-link" href="archive.html">All notes <span aria-hidden="true">→</span></a></div><p class="section-intro">Selected presentations based on textbooks in combinatorics and matroid theory.</p><div class="notes">{note_rows(notes[:3])}</div></section>''' if notes else ''
-    cv_button = f'<a class="cv-button" href="assets/documents/{esc(cv)}">Curriculum vitae <span class="file-tag">PDF</span><span aria-hidden="true">↗</span></a>' if cv else ''
-    body = f'''<main id="main" class="home">
-<section id="about" class="intro" aria-labelledby="name"><aside class="identity"><p class="eyebrow">Combinatorial optimization</p><h1 id="name">Kyeongin<br> Hong<span class="name-dot">.</span></h1><p class="location">{esc(content['location'])}</p>{cv_button}<div class="contact-links"><a href="mailto:{esc(content['email'])}">Email <span aria-hidden="true">↗</span></a><a href="{esc(content['github'])}">GitHub <span aria-hidden="true">↗</span></a></div></aside>
-<div class="intro-copy"><p class="lead">{esc(content['intro'])}</p><p>{esc(content['about'])}</p><p>{esc(content['background'])}</p></div></section>
-<section id="research" class="section interests" aria-labelledby="interests-heading"><div><p class="eyebrow">Research interests</p><h2 id="interests-heading">Structure, formulations,<br> and algorithms.</h2></div><ul class="interest-list">{interests}</ul></section>
-{selected}
-<section id="contact" class="section contact-section"><div><p class="eyebrow">Get in touch</p><h2>Contact</h2></div><div><p>For correspondence, please reach me by email.</p><a class="contact-email" href="mailto:{esc(content['email'])}">{esc(content['email'])}<span aria-hidden="true"> ↗</span></a></div></section>
-</main>'''
-    (output / 'index.html').write_text(page('About', body, active='home'))
-    groups = ''
-    for field in ['Matroid theory','Combinatorics']:
-        entries = [n for n in notes if n['field'] == field]
-        if entries:
-            groups += f'<section class="archive-group"><h2>{esc(field)}</h2>{note_rows(entries)}</section>'
-    if not groups:
-        groups = '<p class="empty-note">Seminar materials are being prepared for this archive.</p>'
-    archive_body = f'''<main id="main" class="inner"><div class="page-title"><p class="eyebrow">Seminar archive</p><h1>Notes &amp; presentations</h1><p>Expository materials prepared while studying combinatorics and matroid theory in reading seminars with Professor Boram Park.</p><p class="source-note">These presentations explain established results from the sources listed with each item.</p></div>{groups}</main>'''
+    # 나중에 공개 승인된 발표를 추가했을 때만 목록과 상세 페이지를 만듭니다.
     if notes:
-        (output / 'archive.html').write_text(page('Notes & presentations', archive_body, active='notes'))
-    if notes:
-        (output / 'notes').mkdir()
-    for n in notes:
-        topics = ''.join(f'<li>{esc(t)}</li>' for t in n['topics'])
-        detail = f'''<main id="main" class="inner detail"><a class="back-link" href="../archive.html">← All presentations</a><div class="page-title"><p class="eyebrow">{esc(n['field'])} / {esc(n['year'])}</p><h1>{esc(n['title'])}</h1><p>{esc(n['summary'])}</p><a class="cv-button" href="../assets/documents/{esc(n['pdf'])}">Read the slides <span class="file-tag">PDF</span><span aria-hidden="true">↗</span></a></div><a class="slide-preview" href="../assets/documents/{esc(n['pdf'])}" aria-label="Open presentation PDF"><img src="../assets/images/{esc(n['image'])}" alt="An example slide from {esc(n['title'])}" width="960" height="540"></a><div class="detail-grid"><section><h2>In these slides</h2><ul>{topics}</ul></section><section><h2>Background</h2><p>{esc(n['prerequisites'])}</p><h2>Source</h2><p>{esc(n['book'])}</p></section></div></main>'''
-        (output / 'notes' / f"{n['slug']}.html").write_text(page(n['title'], detail, prefix='../', active='notes'))
-    (output / '404.html').write_text(page('Page not found', '<main id="main" class="inner"><div class="page-title"><p class="eyebrow">404</p><h1>Page not found</h1><p>This page may have moved. <a href="/">Return to the homepage.</a></p></div></main>', prefix='/'))
-    print(f'Built {output}: {len(notes)} presentations; preview={args.preview}')
+        fields = dict.fromkeys(note['field'] for note in notes)
+        groups = '\n'.join(
+            render('archive-group', field=escape(field), notes=note_rows([n for n in notes if n['field'] == field]))
+            for field in fields
+        )
+        write('archive.html', 'Notes & presentations', render('archive', groups=groups), active='notes')
+        for note in notes:
+            topics = '\n'.join(f'<li>{escape(topic)}</li>' for topic in note['topics'])
+            body = render('note', **note_values(note), topics=topics)
+            write(f"notes/{note['slug']}.html", note['title'], body, prefix='../', active='notes')
+    print(f'Built {output}: {len(notes)} presentations; preview={preview}')
+
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--preview', action='store_true', help='미공개 후보도 로컬 미리보기에 포함합니다.')
+    build(preview=parser.parse_args().preview)

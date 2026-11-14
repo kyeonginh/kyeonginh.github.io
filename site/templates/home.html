@@ -1,0 +1,48 @@
+<main id="main" class="home">
+  <!-- 첫 화면: 왼쪽 프로필, 오른쪽 소개 -->
+  <section id="about" class="intro" aria-labelledby="name">
+    <aside class="identity">
+      <p class="eyebrow">${eyebrow}</p>
+      <h1 id="name">${name_lines}</h1>
+      <p class="location">${location}</p>
+      ${cv_button}
+      <div class="contact-links">
+        <a href="mailto:${email}">Email <span aria-hidden="true">↗</span></a>
+        <a href="${github}">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </aside>
+
+    <div class="intro-copy">
+      <p class="lead">${intro}</p>
+      <p>${about}</p>
+      <p>${background}</p>
+    </div>
+  </section>
+
+  <!-- 연구 관심사: 목록의 내용은 content.json의 interests에서 수정 -->
+  <section id="research" class="section interests" aria-labelledby="interests-heading">
+    <div>
+      <p class="eyebrow">Research interests</p>
+      <h2 id="interests-heading">${research_heading}</h2>
+    </div>
+    <ul class="interest-list">
+      ${interests}
+    </ul>
+  </section>
+
+  <!-- 공개 승인된 발표 자료가 있을 때만 표시 -->
+  ${expositions}
+
+  <section id="contact" class="section contact-section">
+    <div>
+      <p class="eyebrow">Get in touch</p>
+      <h2>Contact</h2>
+    </div>
+    <div>
+      <p>${contact_text}</p>
+      <a class="contact-email" href="mailto:${email}">
+        ${email}<span aria-hidden="true"> ↗</span>
+      </a>
+    </div>
+  </section>
+</main>

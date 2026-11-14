@@ -1,0 +1,26 @@
+<main id="main" class="inner detail">
+  <a class="back-link" href="../archive.html">← All presentations</a>
+  <div class="page-title">
+    <p class="eyebrow">${field} / ${year}</p>
+    <h1>${title}</h1>
+    <p>${summary}</p>
+    <a class="cv-button" href="../assets/documents/${pdf}">
+      Read the slides <span class="file-tag">PDF</span><span aria-hidden="true">↗</span>
+    </a>
+  </div>
+  <a class="slide-preview" href="../assets/documents/${pdf}" aria-label="Open presentation PDF">
+    <img src="../assets/images/${image}" alt="An example slide from ${title}" width="960" height="540">
+  </a>
+  <div class="detail-grid">
+    <section>
+      <h2>In these slides</h2>
+      <ul>${topics}</ul>
+    </section>
+    <section>
+      <h2>Background</h2>
+      <p>${prerequisites}</p>
+      <h2>Source</h2>
+      <p>${book}</p>
+    </section>
+  </div>
+</main>

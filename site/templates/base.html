@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${title} · ${name}</title>
+  <meta name="description" content="${name} — combinatorial optimization, polyhedral methods, and mathematical expositions.">
+  <meta name="theme-color" content="#091426">
+  <meta name="color-scheme" content="dark">
+  ${robots}
+  <link rel="icon" type="image/svg+xml" href="${prefix}assets/favicon.svg">
+  <link rel="stylesheet" href="${prefix}assets/style.css">
+  <script defer src="${prefix}assets/interactions.js"></script>
+</head>
+<body>
+  ${preview_banner}
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- 모든 페이지에 공통으로 표시되는 상단 메뉴 -->
+  <header class="header">
+    <a class="wordmark" href="${prefix}index.html">${name}</a>
+    <nav aria-label="Main navigation">
+      ${navigation}
+    </nav>
+  </header>
+
+  <!-- home.html, archive.html 등의 본문이 여기에 들어갑니다. -->
+  ${body}
+
+  <footer class="footer">
+    <span>© 2026 ${name}</span>
+    <a href="mailto:${email}">${email}</a>
+  </footer>
+</body>
+</html>
