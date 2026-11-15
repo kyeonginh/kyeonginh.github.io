@@ -97,6 +97,10 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
     rgb(73 125 153 / 25%), rgb(47 76 123 / 10%) 55%, transparent 100%);
   opacity: .8;
 }
+/* 중간 화면 폭에서는 좌우 여백에 맞춰 배경의 가로 넘침을 막습니다. */
+@media (max-width: 950px) {
+  .ambient { inset-inline: -32px; }
+}
 @media (max-width: 700px) {
   .ambient { inset: -20px -20px 0; }
   .ambient::before {
@@ -122,7 +126,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .note-links a:hover > span:not(.file-tag), .text-link:hover > span { transform: translateX(3px); }
 .intro-copy { min-width: 0; padding-top: 6px; }
 .intro-copy > p { color: var(--muted); font-size: 15px; line-height: 1.95; }
-.intro-copy > p:last-child { margin-bottom: 0; }
+.intro-copy > :last-child { margin-bottom: 0; }
 .intro-copy a { color: #d1def0; text-decoration-color: #6e8db8; transition: color 180ms, text-decoration-color 180ms; }
 .intro-copy a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 .section { border-top: 1px solid var(--line); padding: 44px 0 50px; }
