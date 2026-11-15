@@ -7,7 +7,7 @@
   "email": "kyeonginh@gmail.com",
   "github": "https://github.com/kyeonginh",
   "about": "I am a research engineer at [ENERZAi](https://enerzai.com), working on machine-learning inference optimization. I received my B.S. in [Industrial Engineering](https://ie.snu.ac.kr/en/) from [Seoul National University](https://en.snu.ac.kr/index.html).",
-  "research_interests": "My interests are in combinatorial optimization, particularly the use of combinatorial structure and polyhedral methods in algorithm design.",
+  "research_interests": "My interests are in combinatorial optimization. I am interested in polyhedral combinatorics and LP-based approximation algorithms.",
   "notes": [
     {
       "title": "Dowling Geometries",
