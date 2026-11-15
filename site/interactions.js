@@ -117,7 +117,7 @@
         nodes[i].setAttribute('cy', point[1].toFixed(2));
         halos[i].setAttribute('cx', point[0].toFixed(2));
         halos[i].setAttribute('cy', point[1].toFixed(2));
-        halos[i].setAttribute('r', smallScreen.matches ? '14' : '12');
+        halos[i].setAttribute('r', smallScreen.matches ? '12' : '10');
         nodes[i].setAttribute('r', (2.8 + (ends.includes(i) ? .55 * pulse : 0)).toFixed(2));
         return point;
       });
