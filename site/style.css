@@ -75,7 +75,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .has-portrait .location { margin-bottom: 10px; }
 .has-portrait .contact-links { margin-top: 0; }
 .has-portrait .intro-copy { padding-top: 0; margin-top: 28px; }
-.intro::before, .intro::after {
+.intro::before {
   content: ''; position: absolute; z-index: -1; pointer-events: none;
   left: 50%; width: 100%; transform: translateX(-50%);
 }
@@ -88,16 +88,6 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
   background-size: 120% 130%, 135% 115%, 115% 125%;
   filter: blur(26px);
   animation: navy-drift 24s ease-in-out infinite alternate;
-}
-.intro::after {
-  top: 20px; bottom: 10px;
-  background-image:
-    radial-gradient(circle, rgb(170 198 242 / 34%) 0 .7px, transparent 1.1px),
-    radial-gradient(circle, rgb(183 203 234 / 20%) 0 .6px, transparent 1px);
-  background-size: 157px 139px, 241px 191px;
-  background-position: 20px 17px, 84px 69px;
-  mask-image: radial-gradient(ellipse at 50% 45%, black, transparent 75%);
-  opacity: .48;
 }
 @keyframes navy-drift {
   from { background-position: 0% 25%, 100% 30%, 35% 100%; opacity: .65; }
@@ -183,7 +173,6 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
   .header nav { gap: 14px; font-size: 11px; }
   .intro { grid-template-columns: 1fr; gap: 35px; padding: 48px 0 42px; }
   .intro::before { inset-block: -15px 0; animation-duration: 30s; }
-  .intro::after { opacity: .3; }
   .identity h1 { font-size: 64px; line-height: 1.03; margin: 0 0 19px; }
   .identity .eyebrow { margin-bottom: 14px; }
   .location { margin-bottom: 18px; }
@@ -213,7 +202,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 }
 @media print {
   :root { color-scheme: light; --paper: white; --ink: #15243a; --muted: #3e4d62; --line: #b4bfce; --accent: #243d61; }
-  .header nav, .preview-banner, .contact-links, .skip-link, .footer, .intro::before, .intro::after { display: none; }
+  .header nav, .preview-banner, .contact-links, .skip-link, .footer, .intro::before { display: none; }
   .header, .home, .inner { width: 100%; }
   .intro { padding-top: 25px; }
   .section { break-inside: avoid; }
