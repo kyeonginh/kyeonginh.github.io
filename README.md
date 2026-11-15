@@ -159,7 +159,7 @@ CV는 소개 문단 아래의 **Here is my CV.** 문장에서 연결합니다. `
 
 - 공개 파일: `assets/documents/cv.pdf`
 - 공개 주소: <https://kyeonginh.com/assets/documents/cv.pdf>
-- 원본 관리: `phd-paperwork/out/commons/cv.pdf`를 이 위치에 복사했습니다. 현재 공개본은 2026-11-13에 컴파일된 파일입니다.
+- 원본 관리: `phd-paperwork/out/commons/cv.pdf`를 이 위치에 복사했습니다. 홈페이지 링크가 포함된 최신 컴파일본을 2026-11-15에 동기화했습니다.
 - 갱신 방법: 원본 프로젝트에서 새 CV를 컴파일한 뒤 공개 파일을 교체하고 commit·push합니다. 링크 주소는 유지됩니다.
 - 일시적으로 숨기려면 `cv`를 `null`로 바꿉니다. Git 기록에 올라간 기존 PDF까지 삭제되는 것은 아닙니다.
 
