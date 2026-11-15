@@ -26,6 +26,12 @@ def stylesheet_name():
     return f'style.{digest}.css'
 
 
+def script_name():
+    """동작이 바뀌면 파일명도 바꿔 이전 애니메이션 캐시를 피합니다."""
+    digest = hashlib.sha256((SITE / 'interactions.js').read_bytes()).hexdigest()[:12]
+    return f'interactions.{digest}.js'
+
+
 def escape(value):
     """JSON의 글자를 HTML에서 안전하게 표시합니다. 예: & → &amp;"""
     return html.escape(str(value), quote=True)
@@ -77,7 +83,7 @@ def page(content, notes, title, body, preview=False, prefix='', active=''):
               '<span>· Presentation selections are provisional</span></div>') if preview else ''
     return render(
         'base', title=escape(title), name=escape(content['name']),
-        email=escape(content['email']), prefix=prefix, body=body, stylesheet=stylesheet_name(),
+        email=escape(content['email']), prefix=prefix, body=body, stylesheet=stylesheet_name(), script=script_name(),
         navigation=navigation(content, notes, prefix, active),
         preview_banner=banner,
         robots='<meta name="robots" content="noindex, nofollow">' if preview else '',
@@ -111,8 +117,8 @@ def copy_assets(output, content, notes):
     assets = output / 'assets'
     assets.mkdir()
     shutil.copyfile(SITE / 'style.css', assets / stylesheet_name())
-    for name in ['favicon.svg', 'interactions.js']:
-        shutil.copyfile(SITE / name, assets / name)
+    shutil.copyfile(SITE / 'interactions.js', assets / script_name())
+    shutil.copyfile(SITE / 'favicon.svg', assets / 'favicon.svg')
     if content.get('portrait'):
         (assets / 'profile').mkdir()
         filename = content['portrait']['file']
