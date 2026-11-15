@@ -77,10 +77,11 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .has-portrait .location { margin-bottom: 10px; }
 .has-portrait .contact-links { margin-top: 0; }
 .has-portrait .intro-copy { padding-top: 0; margin-top: 28px; }
-/* 화면 뒤에 유지되는 공통 번짐. 스크롤 위치와 무관하게 두 빛이 독립적으로 이동합니다. */
+/* About 소개 영역에만 적용하는 번짐. 정적으로 표시하며 이력 구분선 전에 사라집니다. */
 .ambient {
-  position: fixed; z-index: -1; pointer-events: none;
-  inset: 0; overflow: hidden; contain: paint; opacity: .75;
+  position: absolute; z-index: -1; pointer-events: none;
+  inset: -30px -48px 0; overflow: hidden; contain: paint; opacity: .75;
+  mask-image: radial-gradient(ellipse closest-side at 50% 45%, black 45%, transparent 100%);
 }
 .ambient::before, .ambient::after {
   content: ''; position: absolute; inset: -16%;
@@ -89,43 +90,23 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .ambient::before {
   background: radial-gradient(ellipse 31% 35% at 30% 40%,
     rgb(82 126 190 / 32%), rgb(51 82 133 / 13%) 55%, transparent 100%);
-  animation: ambient-blue 16s ease-in-out -4s infinite alternate;
+  opacity: .8;
 }
 .ambient::after {
   background: radial-gradient(ellipse 29% 33% at 70% 60%,
     rgb(73 125 153 / 25%), rgb(47 76 123 / 10%) 55%, transparent 100%);
-  animation: ambient-teal 21s ease-in-out -13s infinite alternate;
-}
-body:has(.slides-page) .ambient { opacity: .68; }
-@keyframes ambient-blue {
-  from { transform: translate(-10vw, -7vh) scale(.90); opacity: .72; }
-  to { transform: translate(24vw, 12vh) scale(1.12); opacity: 1; }
-}
-@keyframes ambient-teal {
-  from { transform: translate(10vw, 10vh) scale(1.10); opacity: 1; }
-  to { transform: translate(-24vw, -14vh) scale(.92); opacity: .72; }
+  opacity: .8;
 }
 @media (max-width: 700px) {
+  .ambient { inset: -20px -20px 0; }
   .ambient::before {
     background: radial-gradient(ellipse 51% 30% at 30% 34%,
       rgb(82 126 190 / 29%), transparent 100%);
-    animation-name: ambient-blue-mobile;
-    animation-duration: 18s;
   }
   .ambient::after {
     background: radial-gradient(ellipse 48% 31% at 70% 64%,
       rgb(73 125 153 / 22%), transparent 100%);
-    animation-name: ambient-teal-mobile;
-    animation-duration: 23s;
   }
-}
-@keyframes ambient-blue-mobile {
-  from { transform: translate(-12vw, -6vh) scale(.94); opacity: .72; }
-  to { transform: translate(22vw, 12vh) scale(1.10); opacity: 1; }
-}
-@keyframes ambient-teal-mobile {
-  from { transform: translate(12vw, 8vh) scale(1.08); opacity: 1; }
-  to { transform: translate(-22vw, -14vh) scale(.94); opacity: .72; }
 }
 .eyebrow { margin: 0 0 20px; color: var(--accent); font-size: 10px; font-weight: 500; letter-spacing: 1.9px; line-height: 1.6; text-transform: uppercase; }
 .eyebrow span { color: var(--muted); }
@@ -277,3 +258,12 @@ body:has(.slides-page) .ambient { opacity: .68; }
   .profile-background { grid-template-columns: 1fr; gap: 32px; padding: 30px 0 38px; }
   .profile-background h2 { margin-bottom: 16px; }
 }
+
+/* 관심사 문단 아래의 작은 간선 교환 예시. 정점과 본문은 움직이지 않습니다. */
+.tree-exchange { width: 420px; max-width: 100%; margin: 10px 0 24px; }
+.tree-exchange svg { display: block; width: 100%; height: auto; overflow: visible; }
+.exchange-edge { stroke: #8294ae; stroke-width: 1.5; opacity: .2; transition: stroke .6s ease-in-out, opacity .6s ease-in-out; }
+.exchange-edge.is-tree { stroke: #9bb7db; opacity: .78; }
+.exchange-node { fill: #b6c9e2; }
+.tree-exchange figcaption { color: var(--muted); font-size: 11px; line-height: 1.5; margin-top: 2px; }
+@media print { .tree-exchange { display: none; } }
