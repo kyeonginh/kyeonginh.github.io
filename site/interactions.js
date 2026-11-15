@@ -33,6 +33,7 @@
     let tree = new Set(edges.flatMap((edge, i) => edge.classList.contains('is-tree') ? [i] : []));
     const svg = exchange.querySelector('svg');
     const nodes = [...exchange.querySelectorAll('.exchange-node')];
+    const halos = [...exchange.querySelectorAll('.exchange-node-halo')];
     const anchors = nodes.map(node => [Number(node.getAttribute('cx')), Number(node.getAttribute('cy'))]);
     const smallScreen = window.matchMedia('(max-width: 640px)');
     const signature = selected => [...selected].sort((a, b) => a - b).join(',');
@@ -114,6 +115,9 @@
         const point = [x + dx, y + dy];
         nodes[i].setAttribute('cx', point[0].toFixed(2));
         nodes[i].setAttribute('cy', point[1].toFixed(2));
+        halos[i].setAttribute('cx', point[0].toFixed(2));
+        halos[i].setAttribute('cy', point[1].toFixed(2));
+        halos[i].setAttribute('r', smallScreen.matches ? '14' : '12');
         nodes[i].setAttribute('r', (2.8 + (ends.includes(i) ? .55 * pulse : 0)).toFixed(2));
         return point;
       });

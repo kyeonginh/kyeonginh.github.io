@@ -272,14 +272,10 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .exchange-edge.is-tree { stroke: #9bb7db; opacity: .78; }
 .tree-exchange.is-animated .exchange-edge { stroke: #8294ae; opacity: .2; transition: none; }
 .exchange-active-edge { stroke: #9bb7db; stroke-width: 1.5; stroke-linecap: round; pointer-events: none; }
-.exchange-node {
-  fill: #b6c9e2;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, .65)) drop-shadow(0 0 6px rgba(255, 255, 255, .22));
-}
+.exchange-node { fill: #b6c9e2; }
+.exchange-node-halo { opacity: .8; pointer-events: none; }
 @media (max-width: 640px) {
-  .exchange-node {
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, .9)) drop-shadow(0 0 9px rgba(255, 255, 255, .45));
-  }
+  .exchange-node-halo { opacity: 1; }
 }
 .tree-exchange figcaption { color: var(--muted); font-size: 11px; line-height: 1.5; margin-top: 2px; }
 @media print { .tree-exchange { display: none; } }
