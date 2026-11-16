@@ -139,14 +139,19 @@
       const distance = Math.hypot(...anchors[index].map((value, axis) => value - originalAnchors[index][axis]));
       if (distance <= 40) return;
       if (motion.matches) anchors[index] = [...originalAnchors[index]];
-      else returning.set(index, { from: [...anchors[index]], started: elapsed + 600 });
+      else returning.set(index, { updated: elapsed + 600 });
     }
     function updateReturns() {
       for (const [index, returningVertex] of returning) {
-        const progress = Math.max(0, Math.min(1, (elapsed - returningVertex.started) / 4200));
-        const eased = progress * progress * (3 - 2 * progress);
-        anchors[index] = returningVertex.from.map((value, axis) => value + (originalAnchors[index][axis] - value) * eased);
-        if (progress === 1) returning.delete(index);
+        const seconds = Math.max(0, (elapsed - returningVertex.updated) / 1000);
+        if (!seconds) continue;
+        returningVertex.updated = elapsed;
+        const delta = originalAnchors[index].map((value, axis) => value - anchors[index][axis]);
+        const distance = Math.hypot(...delta), step = 8 * seconds;
+        if (distance <= step) {
+          anchors[index] = [...originalAnchors[index]];
+          returning.delete(index);
+        } else anchors[index] = anchors[index].map((value, axis) => value + delta[axis] * step / distance);
       }
     }
     function finishDrag(event) {
