@@ -36,6 +36,8 @@
     const halos = [...exchange.querySelectorAll('.exchange-node-halo')];
     const anchors = nodes.map(node => [Number(node.getAttribute('cx')), Number(node.getAttribute('cy'))]);
     const smallScreen = window.matchMedia('(max-width: 640px)');
+    const originalAnchors = anchors.map(point => [...point]);
+    let drag = null;
     const signature = selected => [...selected].sort((a, b) => a - b).join(',');
     const history = [signature(tree)];
     let frame = 0, inView = true, step = 0;
@@ -86,6 +88,98 @@
     svg.insertBefore(activeGroup, nodes[0]);
     exchange.classList.add('is-animated');
     exchange.dataset.step = '0';
+    // 넓은 투명 영역으로 정점을 잡되, 나머지 그래프에서는 터치 스크롤을 허용합니다.
+    const hitGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const hitTargets = nodes.map((node, index) => {
+      const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      hit.setAttribute('class', 'exchange-node-hit');
+      hit.setAttribute('data-vertex', String(index));
+      hit.setAttribute('tabindex', '0');
+      hit.setAttribute('role', 'button');
+      hit.setAttribute('aria-label', `Vertex ${index + 1}. Arrow keys move; Enter resets.`);
+      hitGroup.appendChild(hit);
+      return hit;
+    });
+    svg.appendChild(hitGroup);
+    exchange.removeAttribute('role');
+    svg.removeAttribute('aria-hidden');
+    svg.setAttribute('role', 'group');
+    svg.setAttribute('aria-label', 'Interactive graph. Drag vertices or move them with the arrow keys.');
+    function sizeTargets() {
+      hitTargets.forEach(hit => hit.setAttribute('r', smallScreen.matches ? '24' : '12'));
+    }
+    sizeTargets();
+    function offsetFor(index) {
+      if (motion.matches) return [0, 0];
+      const time = elapsed / 1000, amplitude = smallScreen.matches ? .65 : 1;
+      const phase = index * 2.399, speed = .48 + (index % 4) * .07;
+      return [
+        (2.4 + (index % 3) * .6) * amplitude * (Math.sin(time * speed + phase) - Math.sin(phase)),
+        (2 + (index % 2) * .8) * amplitude * (Math.cos(time * .54 + phase) - Math.cos(phase)),
+      ];
+    }
+    function bounded(point) {
+      return [Math.max(18, Math.min(382, point[0])), Math.max(18, Math.min(202, point[1]))];
+    }
+    function pointerPosition(event) {
+      const matrix = svg.getScreenCTM();
+      if (!matrix) return null;
+      const point = svg.createSVGPoint();
+      point.x = event.clientX; point.y = event.clientY;
+      const local = point.matrixTransform(matrix.inverse());
+      return [local.x, local.y];
+    }
+    function requestDraw() {
+      // Reduced-motion 설정에서는 입력이 있을 때만 한 프레임을 그립니다.
+      if (!frame) frame = requestAnimationFrame(() => { frame = 0; drawScene(); });
+    }
+    function finishDrag(event) {
+      if (!drag || (event?.pointerId != null && event.pointerId !== drag.id)) return;
+      const { index, id, target, point } = drag, offset = offsetFor(index);
+      anchors[index] = point.map((value, axis) => value - offset[axis]);
+      drag = null;
+      target.classList.remove('is-dragging');
+      if (target.hasPointerCapture(id)) target.releasePointerCapture(id);
+      nextExchange = elapsed + 1500;
+      requestDraw();
+    }
+    hitGroup.addEventListener('pointerdown', event => {
+      const target = event.target.closest('.exchange-node-hit');
+      if (!target || drag || event.button !== 0 || event.isPrimary === false) return;
+      const index = Number(target.dataset.vertex), pointer = pointerPosition(event);
+      if (!pointer) return;
+      const point = [Number(nodes[index].getAttribute('cx')), Number(nodes[index].getAttribute('cy'))];
+      drag = { index, id: event.pointerId, target, point, offset: pointer.map((value, axis) => value - point[axis]) };
+      target.setPointerCapture(event.pointerId);
+      target.classList.add('is-dragging');
+      event.preventDefault();
+    });
+    hitGroup.addEventListener('pointermove', event => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const pointer = pointerPosition(event);
+      if (!pointer) return;
+      drag.point = bounded(pointer.map((value, axis) => value - drag.offset[axis]));
+      event.preventDefault();
+      requestDraw();
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => hitGroup.addEventListener(type, finishDrag));
+    hitGroup.addEventListener('keydown', event => {
+      if (drag) return;
+      const target = event.target.closest('.exchange-node-hit');
+      if (!target) return;
+      const index = Number(target.dataset.vertex), offset = offsetFor(index);
+      const delta = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+      if (delta) {
+        const point = bounded(anchors[index].map((value, axis) => value + offset[axis] + delta[axis] * (event.shiftKey ? 10 : 4)));
+        anchors[index] = point.map((value, axis) => value - offset[axis]);
+      } else if (['Enter', ' ', 'Home'].includes(event.key)) anchors[index] = [...originalAnchors[index]];
+      else return;
+      event.preventDefault();
+      nextExchange = elapsed + 1500;
+      requestDraw();
+    });
+    window.addEventListener('blur', () => finishDrag());
+    smallScreen.addEventListener?.('change', () => { sizeTargets(); updateExchange(); });
     function advanceExchange() {
       const swap = chooseExchange();
       tree = swap.result; step++;
@@ -103,20 +197,19 @@
     }
     function drawScene() {
       const moving = !motion.matches;
-      const time = elapsed / 1000, amplitude = smallScreen.matches ? .65 : 1;
       const raw = activeSwap ? Math.min(1, (elapsed - activeSwap.started) / 420) : 1;
       const progress = raw * raw * (3 - 2 * raw);
       const pulse = activeSwap && moving ? Math.sin(Math.PI * raw) ** 2 : 0;
       const ends = activeSwap ? endpoints[activeSwap.entering] : [];
       const points = anchors.map(([x, y], i) => {
-        const phase = i * 2.399, speed = .48 + (i % 4) * .07;
-        const dx = moving ? (2.4 + (i % 3) * .6) * amplitude * (Math.sin(time * speed + phase) - Math.sin(phase)) : 0;
-        const dy = moving ? (2 + (i % 2) * .8) * amplitude * (Math.cos(time * .54 + phase) - Math.cos(phase)) : 0;
-        const point = [x + dx, y + dy];
+        const offset = offsetFor(i);
+        const point = drag?.index === i ? drag.point : [x + offset[0], y + offset[1]];
         nodes[i].setAttribute('cx', point[0].toFixed(2));
         nodes[i].setAttribute('cy', point[1].toFixed(2));
         halos[i].setAttribute('cx', point[0].toFixed(2));
         halos[i].setAttribute('cy', point[1].toFixed(2));
+        hitTargets[i].setAttribute('cx', point[0].toFixed(2));
+        hitTargets[i].setAttribute('cy', point[1].toFixed(2));
         nodes[i].setAttribute('r', (2.8 + (ends.includes(i) ? .55 * pulse : 0)).toFixed(2));
         return point;
       });
@@ -136,7 +229,7 @@
     function tick(time) {
       if (lastTime) elapsed += Math.min(time - lastTime, 100);
       lastTime = time;
-      if (elapsed >= nextExchange) advanceExchange();
+      if (!drag && elapsed >= nextExchange) advanceExchange();
       if (time - lastDraw >= 1000 / 30) { drawScene(); lastDraw = time; }
       frame = requestAnimationFrame(tick);
     }
@@ -152,7 +245,10 @@
       });
       exchangeObserver.observe(exchange);
     }
-    document.addEventListener('visibilitychange', updateExchange);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) finishDrag();
+      updateExchange();
+    });
     motion.addEventListener?.('change', updateExchange);
     updateExchange();
   }
