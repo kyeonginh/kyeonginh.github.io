@@ -37,6 +37,7 @@
     const anchors = nodes.map(node => [Number(node.getAttribute('cx')), Number(node.getAttribute('cy'))]);
     const smallScreen = window.matchMedia('(max-width: 640px)');
     const originalAnchors = anchors.map(point => [...point]);
+    const returning = new Map();
     let drag = null;
     const signature = selected => [...selected].sort((a, b) => a - b).join(',');
     const history = [signature(tree)];
@@ -133,11 +134,27 @@
       // Reduced-motion 설정에서는 입력이 있을 때만 한 프레임을 그립니다.
       if (!frame) frame = requestAnimationFrame(() => { frame = 0; drawScene(); });
     }
+    function scheduleReturn(index) {
+      returning.delete(index);
+      const distance = Math.hypot(...anchors[index].map((value, axis) => value - originalAnchors[index][axis]));
+      if (distance <= 40) return;
+      if (motion.matches) anchors[index] = [...originalAnchors[index]];
+      else returning.set(index, { from: [...anchors[index]], started: elapsed + 600 });
+    }
+    function updateReturns() {
+      for (const [index, returningVertex] of returning) {
+        const progress = Math.max(0, Math.min(1, (elapsed - returningVertex.started) / 4200));
+        const eased = progress * progress * (3 - 2 * progress);
+        anchors[index] = returningVertex.from.map((value, axis) => value + (originalAnchors[index][axis] - value) * eased);
+        if (progress === 1) returning.delete(index);
+      }
+    }
     function finishDrag(event) {
       if (!drag || (event?.pointerId != null && event.pointerId !== drag.id)) return;
       const { index, id, target, point } = drag, offset = offsetFor(index);
       anchors[index] = point.map((value, axis) => value - offset[axis]);
       drag = null;
+      scheduleReturn(index);
       target.classList.remove('is-dragging');
       if (target.hasPointerCapture(id)) target.releasePointerCapture(id);
       requestDraw();
@@ -147,6 +164,7 @@
       if (!target || drag || event.button !== 0 || event.isPrimary === false) return;
       const index = Number(target.dataset.vertex), pointer = pointerPosition(event);
       if (!pointer) return;
+      returning.delete(index);
       const point = [Number(nodes[index].getAttribute('cx')), Number(nodes[index].getAttribute('cy'))];
       drag = { index, id: event.pointerId, target, point, offset: pointer.map((value, axis) => value - point[axis]) };
       target.setPointerCapture(event.pointerId);
@@ -173,6 +191,7 @@
         anchors[index] = point.map((value, axis) => value - offset[axis]);
       } else if (['Enter', ' ', 'Home'].includes(event.key)) anchors[index] = [...originalAnchors[index]];
       else return;
+      scheduleReturn(index);
       event.preventDefault();
       nextExchange = elapsed + 1500;
       requestDraw();
@@ -195,6 +214,7 @@
       line.setAttribute('x2', b[0].toFixed(2)); line.setAttribute('y2', b[1].toFixed(2));
     }
     function drawScene() {
+      updateReturns();
       const moving = !motion.matches;
       const raw = activeSwap ? Math.min(1, (elapsed - activeSwap.started) / 420) : 1;
       const progress = raw * raw * (3 - 2 * raw);
@@ -234,7 +254,12 @@
     }
     function updateExchange() {
       cancelAnimationFrame(frame); frame = 0; lastTime = 0; lastDraw = -Infinity;
-      if (motion.matches) { activeSwap = null; drawScene(); }
+      if (motion.matches) {
+        for (const index of returning.keys()) anchors[index] = [...originalAnchors[index]];
+        returning.clear();
+        activeSwap = null;
+        drawScene();
+      }
       else if (!document.hidden && inView) frame = requestAnimationFrame(tick);
     }
     drawScene();
