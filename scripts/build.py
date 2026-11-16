@@ -100,7 +100,12 @@ def home(content, notes):
                                 education=background_rows('education'))
     portrait = content.get('portrait')
     portrait_html = render('portrait', file=escape(portrait['file']), alt=escape(portrait['alt'])) if portrait else ''
-    cv_reference = render('cv-link', href=escape('assets/documents/' + content['cv'])) if content.get('cv') else ''
+    cv_reference = ''
+    if content.get('cv'):
+        # PDF가 바뀌면 링크도 바뀌어 이전 CV 캐시를 재사용하지 않습니다.
+        cv_path = ROOT / 'assets/documents' / content['cv']
+        cv_version = hashlib.sha256(cv_path.read_bytes()).hexdigest()[:12]
+        cv_reference = render('cv-link', href=escape(f"assets/documents/{content['cv']}?v={cv_version}"))
     values = {key: escape(content[key]) for key in
               ['location', 'email', 'github', 'linkedin', 'about', 'research_interests']}
     values['about'] = inline_links(content['about'])
