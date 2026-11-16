@@ -140,7 +140,6 @@
       drag = null;
       target.classList.remove('is-dragging');
       if (target.hasPointerCapture(id)) target.releasePointerCapture(id);
-      nextExchange = elapsed + 1500;
       requestDraw();
     }
     hitGroup.addEventListener('pointerdown', event => {
@@ -229,7 +228,7 @@
     function tick(time) {
       if (lastTime) elapsed += Math.min(time - lastTime, 100);
       lastTime = time;
-      if (!drag && elapsed >= nextExchange) advanceExchange();
+      if (elapsed >= nextExchange) advanceExchange();
       if (time - lastDraw >= 1000 / 30) { drawScene(); lastDraw = time; }
       frame = requestAnimationFrame(tick);
     }
