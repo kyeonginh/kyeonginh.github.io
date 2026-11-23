@@ -280,3 +280,7 @@ h3 { font-size: 24px; letter-spacing: -.5px; }
 .exchange-node-halo { opacity: .55; pointer-events: none; }
 .tree-exchange figcaption { color: var(--muted); font-size: 11px; line-height: 1.5; margin-top: 2px; }
 @media print { .tree-exchange { display: none; } }
+
+.seminar-intro p { margin: 0; }
+.seminar-intro p + p { margin-top: 0.6em; }
+.seminar-intro ul { margin: 0.2em 0 0; padding-left: 1.3em; }
