@@ -163,7 +163,7 @@ def build(preview=False):
     write('index.html', 'About', home(content, notes), active='home')
     if notes:
         body = render('slides', expositions=render('expositions', notes=note_rows(notes)))
-        write('slides.html', 'Seminar Slides', body, active='notes')
+        write('slides.html', 'Seminars in Combinatorics and Matroid Theory', body, active='notes')
     write('404.html', 'Page not found', render('not-found'), prefix='/')
 
     # 별도 아카이브가 필요해졌을 때만 활성화합니다.
